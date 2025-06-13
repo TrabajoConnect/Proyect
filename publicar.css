@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    background-color: #007BFF;
+    color: white;
+    padding: 20px 0;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007BFF;
+    padding: 15px 10%;
+    color: white;
+    font-weight: normal;
+}
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul li {
+    margin-left: 20px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #ffc107;
+  }
+  
+  .formulario {
+    background: #fff;
+    padding: 40px;
+    max-width: 600px;
+    margin: 30px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .formulario label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .formulario input,
+  .formulario select,
+  .formulario textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .formulario button {
+    background: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .formulario button:hover {
+    background-color: #0056b3;
+  }
+  
+  .resultado {
+    max-width: 600px;
+    margin: 30px auto;
+    background: #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .resultado img {
+    max-width: 100px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .modificar-btn {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px 15px;
+    background: #ffc107;
+    color: #000;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .modificar-btn:hover {
+    background-color: #e0a800;
+  }
+  .btn-registrarse {
+    background: white;
+    color: #007BFF;
+    padding: 5px 10px;
+    border-radius: 5px;
+}

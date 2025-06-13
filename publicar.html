@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicar Trabajo - TrabajoConect</title>
+  <link rel="stylesheet" href="publicar.css">
+  <style>
+    .formulario {
+      background: #fff;
+      padding: 40px;
+      max-width: 600px;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .formulario label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .formulario input, .formulario select, .formulario textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .formulario button {
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .resultado {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .resultado img {
+      max-width: 100px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .modificar-btn {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 10px 15px;
+      background: #ffc107;
+      color: #000;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    #otroServicioInput {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">TrabajoConect</div>
+    <nav>
+        <ul style="font-weight: initial;">
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="publicar.html">Publicar</a></li>
+            <li><a href="#">Iniciar sesión</a></li>
+            <li><a href="#" class="btn-registrarse">Regístrate</a></li>
+        </ul>
+    </nav>
+</header>
+  <section class="formulario">
+    <form id="registroForm">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="cedula">Cédula:</label>
+      <input type="text" id="cedula" name="cedula" required>
+
+      <label for="servicio">Servicio:</label>
+      <select id="servicio" name="servicio">
+        <option value="Tutor">Tutor</option>
+        <option value="Electricista">Electricista</option>
+        <option value="Niñera">Niñera</option>
+        <option value="Ebanista">Ebanista</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <input type="text" id="otroServicioInput" name="otroServicio" placeholder="Escribe el servicio" />
+
+      <label for="experiencia">Tiempo de experiencia:</label>
+      <input type="text" id="experiencia" name="experiencia" required>
+
+      <label for="ubicacion">Localización:</label>
+      <input type="text" id="ubicacion" name="ubicacion" required>
+
+      <label for="horario">Horario laboral:</label>
+      <input type="text" id="horario" name="horario" required>
+
+      <label for="imagen">Insertar imagen:</label>
+      <input type="file" id="imagen" name="imagen" accept="image/*">
+
+      <button type="submit">Publicar</button>
+    </form>
+  </section>
+
+  <section class="resultado" id="resultado" style="display:none;">
+    <img id="imagenPreview" src="" alt="Foto del trabajador">
+    <p><strong>Nombre:</strong> <span id="resNombre"></span></p>
+    <p><strong>Cédula:</strong> <span id="resCedula"></span></p>
+    <p><strong>Servicio:</strong> <span id="resServicio"></span></p>
+    <p><strong>Experiencia:</strong> <span id="resExperiencia"></span></p>
+    <p><strong>Ubicación:</strong> <span id="resUbicacion"></span></p>
+    <p><strong>Horario:</strong> <span id="resHorario"></span></p>
+    <div class="modificar-btn" onclick="modificarDatos()">Modificar</div>
+  </section>
+
+  <script>
+    const form = document.getElementById('registroForm');
+    const resultado = document.getElementById('resultado');
+    const servicioSelect = document.getElementById('servicio');
+    const otroServicioInput = document.getElementById('otroServicioInput');
+
+    servicioSelect.addEventListener('change', function() {
+      otroServicioInput.style.display = this.value === 'Otro' ? 'block' : 'none';
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const servicioElegido = servicioSelect.value === 'Otro' ? otroServicioInput.value : servicioSelect.value;
+
+      document.getElementById('resNombre').textContent = form.nombre.value;
+      document.getElementById('resCedula').textContent = form.cedula.value;
+      document.getElementById('resServicio').textContent = servicioElegido;
+      document.getElementById('resExperiencia').textContent = form.experiencia.value;
+      document.getElementById('resUbicacion').textContent = form.ubicacion.value;
+      document.getElementById('resHorario').textContent = form.horario.value;
+
+      const file = form.imagen.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagenPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      resultado.style.display = 'block';
+    });
+
+    function modificarDatos() {
+      resultado.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+

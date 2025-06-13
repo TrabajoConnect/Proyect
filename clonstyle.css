@@ -1,0 +1,122 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Contenedor general */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.btn-registrarse {
+    background: white;
+    color: #007BFF;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* BUSCADOR */
+.buscador {
+    background: #f4f4f4;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.search-box input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-box button {
+    padding: 10px 15px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* PROFESIONALES */
+.profesionales {
+    padding: 50px 0;
+}
+
+.lista-profesionales {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.tarjeta {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;
+    border-radius: 10px;
+    margin: 15px;
+}
+
+.tarjeta img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.tarjeta h3 {
+    margin: 10px 0;
+}
+
+.tarjeta p {
+    font-size: 14px;
+    color: #555;
+}
+
+.tarjeta button {
+    background: #007BFF;
+    color: white;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
