@@ -50,7 +50,7 @@ El proyecto busca reducir la informalidad, aumentar la seguridad y confianza en 
 
 ---
 
-🙋‍♂️ Cómo contribuir
+## 🙋‍♂️ Cómo contribuir
 
 Este proyecto utiliza el flujo de trabajo GitFlow, por lo que te pedimos que crees ramas específicas para cada funcionalidad que vayas a desarrollar.
 
