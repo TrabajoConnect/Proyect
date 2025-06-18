@@ -50,15 +50,17 @@ El proyecto busca reducir la informalidad, aumentar la seguridad y confianza en 
 
 ---
 
-## 🙋‍♂️ Cómo contribuir
+🙋‍♂️ Cómo contribuir
 
-1. Haz un fork del proyecto
-2. Clona tu fork: `git clone https://github.com/tuusuario/trabajoconect.git`
-3. Crea una nueva rama: `git checkout -b mejora/nueva-funcionalidad`
-4. Realiza tus cambios y haz commit: `git commit -m "Agrega nueva funcionalidad"`
-5. Sube tus cambios: `git push origin mejora/nueva-funcionalidad`
-6. Crea un Pull Request
+Este proyecto utiliza el flujo de trabajo GitFlow, por lo que te pedimos que crees ramas específicas para cada funcionalidad que vayas a desarrollar.
 
+Haz un fork del proyecto
+Clona tu fork: git clone https://github.com/tuusuario/trabajoconect.git
+Crea una nueva rama a partir de develop, siguiendo el nombre de la funcionalidad:
+git checkout -b feature/nombre-de-la-funcionalidad
+Realiza tus cambios y haz commit: git commit -m "Agrega nueva funcionalidad"
+Sube tus cambios: git push origin feature/nombre-de-la-funcionalidad
+Crea un Pull Request hacia la rama develop
 También puedes sugerir mejoras creando un [Issue](https://github.com/tuusuario/trabajoconect/issues) 🚀
 
 ---
