@@ -56,10 +56,7 @@ Este proyecto utiliza el flujo de trabajo GitFlow, por lo que te pedimos que cre
 
 Haz un fork del proyecto
 Clona tu fork: git clone https://github.com/tuusuario/trabajoconect.git
-Crea una nueva rama a partir de develop, siguiendo el nombre de la funcionalidad:
-git checkout -b feature/nombre-de-la-funcionalidad
-Realiza tus cambios y haz commit: git commit -m "Agrega nueva funcionalidad"
-Sube tus cambios: git push origin feature/nombre-de-la-funcionalidad
+💡 Importante: Si quieres contribuir, elige una de las ramas con nombre feature/..., clónala, y trabaja tu mejora ahí. Luego haz un Pull Request a develop.
 Crea un Pull Request hacia la rama develop
 También puedes sugerir mejoras creando un [Issue](https://github.com/tuusuario/trabajoconect/issues) 🚀
 
