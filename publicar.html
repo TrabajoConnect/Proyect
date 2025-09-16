@@ -120,44 +120,7 @@
     <div class="modificar-btn" onclick="modificarDatos()">Modificar</div>
   </section>
 
-  <script>
-    const form = document.getElementById('registroForm');
-    const resultado = document.getElementById('resultado');
-    const servicioSelect = document.getElementById('servicio');
-    const otroServicioInput = document.getElementById('otroServicioInput');
-
-    servicioSelect.addEventListener('change', function() {
-      otroServicioInput.style.display = this.value === 'Otro' ? 'block' : 'none';
-    });
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const servicioElegido = servicioSelect.value === 'Otro' ? otroServicioInput.value : servicioSelect.value;
-
-      document.getElementById('resNombre').textContent = form.nombre.value;
-      document.getElementById('resCedula').textContent = form.cedula.value;
-      document.getElementById('resServicio').textContent = servicioElegido;
-      document.getElementById('resExperiencia').textContent = form.experiencia.value;
-      document.getElementById('resUbicacion').textContent = form.ubicacion.value;
-      document.getElementById('resHorario').textContent = form.horario.value;
-
-      const file = form.imagen.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('imagenPreview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-
-      resultado.style.display = 'block';
-    });
-
-    function modificarDatos() {
-      resultado.style.display = 'none';
-    }
-  </script>
+  <script src="js/publicar.js"></script>
 </body>
 </html>
 
