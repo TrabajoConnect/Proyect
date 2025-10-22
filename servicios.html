@@ -1,3 +1,7 @@
+<!--
+  Página de Servicios
+  Pide a la API la lista de profesionales y los muestra en tarjetas.
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,6 +12,7 @@
 </head>
 <body>
 
+    <!-- Encabezado con logo y navegación -->
     <header>
         <div class="logo">TrabajoConect</div>
         <nav>
@@ -15,12 +20,13 @@
                 <li><a href="inicio.html">Inicio</a></li>
                 <li><a href="servicios.html">Servicios</a></li>
                 <li><a href="publicar.html">Publicar</a></li>
-                <li><a href="#">Iniciar sesión</a></li>
-                <li><a href="#" class="btn-registrarse">Regístrate</a></li>
+                <li><a href="login.html">Iniciar sesión</a></li>
+                <li><a href="registro.html" class="btn-registrarse">Regístrate</a></li>
             </ul>
         </nav>
     </header>
 
+    <!-- Cabecera visual con un buscador (decorativo por ahora) -->
     <section class="hero">
         <h1>Encuentra al profesional que necesitas</h1>
         <p>Conéctate con expertos en diferentes oficios y resuelve tus necesidades fácilmente.</p>
@@ -28,11 +34,14 @@
         <button>Buscar</button>
     </section>
 
+    <!-- Contenedor donde se pintan las tarjetas desde JS -->
     <section class="servicios">
         <h2>servicios Destacados</h2>
         <div class="lista-servicios"><!-- contenido dinámico --></div>
     </section>
 
+    <!-- Cargamos el cliente de API y luego el script que pinta la lista -->
+    <script src="js/api.js"></script>
     <script src="js/servicios.js"></script>
 </body>
 </html>

@@ -1,3 +1,7 @@
+<!--
+  Página para publicar un nuevo profesional/trabajo
+  El formulario envía los datos a la API y muestra un resumen en pantalla.
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,10 +73,11 @@
             <li><a href="inicio.html">Inicio</a></li>
             <li><a href="servicios.html">Servicios</a></li>
             <li><a href="publicar.html">Publicar</a></li>
-            <li><a href="#">Iniciar sesión</a></li>
-            <li><a href="#" class="btn-registrarse">Regístrate</a></li>
+            <li><a href="login.html">Iniciar sesión</a></li>
+            <li><a href="registro.html" class="btn-registrarse">Regístrate</a></li>
         </ul>
     </nav>
+<!-- Fin del encabezado -->
 </header>
   <section class="formulario">
     <form id="registroForm">
@@ -91,7 +96,8 @@
         <option value="Otro">Otro</option>
       </select>
 
-      <input type="text" id="otroServicioInput" name="otroServicio" placeholder="Escribe el servicio" />
+  <!-- Este campo aparece solo si eliges "Otro" en la lista -->
+  <input type="text" id="otroServicioInput" name="otroServicio" placeholder="Escribe el servicio" />
 
       <label for="experiencia">Tiempo de experiencia:</label>
       <input type="text" id="experiencia" name="experiencia" required>
@@ -120,6 +126,8 @@
     <div class="modificar-btn" onclick="modificarDatos()">Modificar</div>
   </section>
 
+  <!-- Primero el cliente de API, luego el script que maneja este formulario -->
+  <script src="js/api.js"></script>
   <script src="js/publicar.js"></script>
 </body>
 </html>

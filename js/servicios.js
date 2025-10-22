@@ -1,5 +1,4 @@
-// Carga y render de profesionales desde la API
-const API_BASE = 'http://localhost:3000'; // Cambia a tu URL en Render cuando despliegues
+// En esta página pedimos a la API la lista de profesionales y los dibujamos como tarjetas.
 
 async function cargarProfesionales() {
   const contenedor = document.querySelector('.lista-servicios');
@@ -7,9 +6,7 @@ async function cargarProfesionales() {
 
   contenedor.innerHTML = '<p>Cargando profesionales...</p>';
   try {
-    const resp = await fetch(`${API_BASE}/api/profesionales`);
-    if (!resp.ok) throw new Error('Error al cargar profesionales');
-    const datos = await resp.json();
+    const datos = await API.get('/api/profesionales');
 
     if (!Array.isArray(datos) || datos.length === 0) {
       contenedor.innerHTML = '<p>No hay profesionales aún.</p>';

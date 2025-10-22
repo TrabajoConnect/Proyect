@@ -1,6 +1,7 @@
-// Conecta el formulario de publicar con la API y guarda en la base de datos
-const API_BASE = 'http://localhost:3000'; // Cambia a tu URL en Render cuando despliegues
+// Este archivo conecta el formulario de "Publicar" con la API.
+// Lee los datos del formulario, los valida de forma básica y los envía al servidor.
 
+// Muestra en pantalla un resumen de lo que se envió (no es obligatorio, solo informativo)
 function mostrarResultado(datos, imagenSrc) {
   const resultado = document.getElementById('resultado');
   document.getElementById('resNombre').textContent = datos.nombre;
@@ -14,6 +15,7 @@ function mostrarResultado(datos, imagenSrc) {
   resultado.style.display = 'block';
 }
 
+// Prepara los eventos y el envío del formulario
 function hookPublicarFormulario() {
   const form = document.getElementById('registroForm');
   const servicioSelect = document.getElementById('servicio');
@@ -55,13 +57,7 @@ function hookPublicarFormulario() {
     }
 
     try {
-      const resp = await fetch(`${API_BASE}/api/profesionales`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!resp.ok) throw new Error('No se pudo guardar la publicación');
-      const result = await resp.json();
+      const result = await API.post('/api/profesionales', payload);
 
       // Mostrar resumen en la página
       mostrarResultado(payload, imagenSrc);

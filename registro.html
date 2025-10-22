@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrarse - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="inicio.html">TrabajoConect</a>
+    <nav>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a class="active" href="registro.html">Regístrate</a>
+      <a href="login.html">Iniciar sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Crear cuenta</h1>
+    <p class="muted">Puedes registrarte con correo o con teléfono. Solo uno es necesario.</p>
+
+    <form id="registro-form" class="card">
+      <label>
+        Nombre completo
+        <input type="text" name="nombre" placeholder="Tu nombre" required />
+      </label>
+
+      <div class="grid-2">
+        <label>
+          Correo electrónico (opcional)
+          <input type="email" name="email" placeholder="tucorreo@ejemplo.com" />
+        </label>
+        <label>
+          Teléfono (opcional)
+          <input type="tel" name="telefono" placeholder="8095551234" />
+        </label>
+      </div>
+
+      <label>
+        Ubicación (opcional)
+        <input type="text" name="ubicacion" placeholder="Ciudad / Sector" />
+      </label>
+
+      <div class="grid-2">
+        <label>
+          Contraseña
+          <input type="password" name="password" placeholder="Mínimo 6 caracteres" required />
+        </label>
+        <label>
+          Confirmar contraseña
+          <input type="password" name="confirmar" placeholder="Repite la contraseña" required />
+        </label>
+      </div>
+
+      <button type="submit" class="btn-primary">Crear cuenta</button>
+      <p class="small">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+      <div id="registro-msg" class="msg" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/registro.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="inicio.html">TrabajoConect</a>
+    <nav>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a href="registro.html">Regístrate</a>
+      <a class="active" href="login.html">Iniciar sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Iniciar sesión</h1>
+    <p class="muted">Usa tu correo o tu teléfono, y tu contraseña.</p>
+
+    <form id="login-form" class="card">
+      <label>
+        Correo o Teléfono
+        <input type="text" name="identificador" placeholder="tucorreo@ejemplo.com o 8095551234" required />
+      </label>
+
+      <label>
+        Contraseña
+        <input type="password" name="password" placeholder="Ingresa tu contraseña" required />
+      </label>
+
+      <button type="submit" class="btn-primary">Entrar</button>
+      <p class="small">¿Nuevo por aquí? <a href="registro.html">Crea tu cuenta</a></p>
+      <div id="login-msg" class="msg" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

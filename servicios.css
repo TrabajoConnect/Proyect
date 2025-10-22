@@ -1,3 +1,7 @@
+/*
+    Estilos de la página de Servicios
+    Controla la cabecera, el bloque "hero" y las tarjetas de profesionales.
+*/
 /* Reset básico */
 * {
     margin: 0;
@@ -75,7 +79,7 @@ nav ul li a {
     cursor: pointer;
 }
 
-/* servicios */
+/* Listado de servicios (tarjetas) */
 .servicios {
     padding: 50px 10%;
 }

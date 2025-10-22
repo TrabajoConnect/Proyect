@@ -1,13 +1,29 @@
+/**
+ * API de TrabajoConect (servidor backend)
+ *
+ * En palabras simples: este archivo enciende el servidor que recibe
+ * solicitudes del navegador (por ejemplo, "dame la lista de profesionales")
+ * y responde con datos desde la base de datos.
+ */
 // API mínima con Express
 const express = require('express');
 const cors = require('cors');
 const db = require('../db/database');
 
 const app = express();
+// Habilita que navegadores de otra dirección (tu frontend) puedan llamar a esta API
 app.use(cors());
+// Permite que la API entienda cuerpos JSON enviados por el navegador
 app.use(express.json());
 
-// Utilidad: insertar datos de ejemplo si la tabla está vacía
+// Rutas y middlewares
+const profesionalesRouter = require('./routes/profesionales.routes');
+const authRouter = require('./routes/auth.routes');
+const { errorHandler } = require('./middlewares/error');
+/**
+ * Semillas de ejemplo (seed): si la tabla está vacía, insertamos 3
+ * profesionales para que al abrir la web ya se vea contenido.
+ */
 function seedIfEmpty(callback) {
   db.get('SELECT COUNT(*) as total FROM profesionales', [], (err, row) => {
     if (err) return callback && callback(err);
@@ -27,37 +43,25 @@ function seedIfEmpty(callback) {
   });
 }
 
-// Healthcheck
+// Healthcheck: pequeño chequeo para saber si el servidor está vivo
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
-// Listar profesionales
-app.get('/api/profesionales', (_req, res) => {
-  db.all('SELECT * FROM profesionales', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
+// Todas las rutas que empiezan con /api/profesionales se atienden aquí
+app.use('/api/profesionales', profesionalesRouter);
 
-// Crear profesional
-app.post('/api/profesionales', (req, res) => {
-  const { nombre, cedula, servicio, experiencia, ubicacion, horario, imagen } = req.body || {};
-  const sql = `
-    INSERT INTO profesionales (nombre, cedula, servicio, experiencia, ubicacion, horario, imagen)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `;
-  db.run(sql, [nombre, cedula, servicio, experiencia, ubicacion, horario, imagen || null], function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(201).json({ id: this.lastID });
-  });
-});
+// Rutas de autenticación (registro e inicio de sesión)
+app.use('/api/auth', authRouter);
 
-// Endpoint para sembrar datos manualmente
+// Ruta para forzar la siembra de datos (útil en pruebas)
 app.post('/api/seed', (_req, res) => {
   seedIfEmpty((err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ ok: true, message: 'Seed ejecutado (si estaba vacío).' });
   });
 });
+
+// Si algo falla en las rutas, este manejador devuelve un error claro
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
