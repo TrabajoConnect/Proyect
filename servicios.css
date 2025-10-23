@@ -7,44 +7,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
 
-/* HEADER */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #007BFF;
-    padding: 15px 10%;
-    color: white;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-.btn-registrarse {
-    background: white;
-    color: #007BFF;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
+/* Header y navegación heredan de auth.css (.topbar). */
+.logo { font-size: 24px; font-weight: bold; }
 
 
 /* HERO */
@@ -72,7 +38,7 @@ nav ul li a {
 
 .hero button {
     padding: 10px 15px;
-    background: #007BFF;
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 5px;
@@ -116,6 +82,7 @@ nav ul li a {
 
 .tarjeta button {
     background: #007BFF;
+    background: var(--primary);
     color: white;
     padding: 8px 10px;
     border: none;

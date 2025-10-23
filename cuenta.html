@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi cuenta - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="inicio.html">TrabajoConect</a>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a id="menu-auth-link" class="btn-registrarse" href="cuenta.html">Mi cuenta</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Mi cuenta</h1>
+    <div id="cuenta-card" class="card">
+      <p><strong>Nombre:</strong> <span id="cuenta-nombre">-</span></p>
+      <p><strong>Correo:</strong> <span id="cuenta-email">-</span></p>
+      <p><strong>Teléfono:</strong> <span id="cuenta-telefono">-</span></p>
+      <p><strong>Ubicación:</strong> <span id="cuenta-ubicacion">-</span></p>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button id="btn-cerrar-sesion" class="btn-primary" type="button">Cerrar sesión</button>
+      </div>
+      <div id="cuenta-msg" class="msg" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/session.js"></script>
+  <script>
+  (function(){
+    function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+    ready(() => {
+      const msg = document.getElementById('cuenta-msg');
+      function setMsg(text, type){ msg.textContent = text || ''; msg.className = `msg ${type||''}`; }
+
+      let usuario = null;
+      try { usuario = JSON.parse(localStorage.getItem('usuario') || 'null'); } catch(_) {}
+
+      if (!usuario) {
+        setMsg('No has iniciado sesión. Redirigiendo a Iniciar sesión...', 'error');
+        setTimeout(() => { window.location.href = 'login.html'; }, 800);
+        return;
+      }
+
+      document.getElementById('cuenta-nombre').textContent = usuario.nombre || '-';
+      document.getElementById('cuenta-email').textContent = usuario.email || '-';
+      document.getElementById('cuenta-telefono').textContent = usuario.telefono || '-';
+      document.getElementById('cuenta-ubicacion').textContent = usuario.ubicacion || '-';
+
+      document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
+        localStorage.removeItem('usuario');
+        setMsg('Sesión cerrada.', 'success');
+        setTimeout(() => { window.location.href = 'inicio.html'; }, 300);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

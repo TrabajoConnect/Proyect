@@ -8,20 +8,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="inicio.css">
 </head>
 <body>
   <!-- Encabezado con logo y navegación principal -->
-  <header>
-    <div class="logo">TrabajoConect</div>
+  <header class="topbar">
+  <a class="logo" href="inicio.html">TrabajoConect</a>
     <nav>
-        <ul>
-            <li><a href="inicio.html">Inicio</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="publicar.html">Publicar</a></li>
-            <li><a href="login.html">Iniciar sesión</a></li>
-            <li><a href="registro.html" class="btn-registrarse">Regístrate</a></li>
-        </ul>
+      <a href="inicio.html">Inicio</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
     </nav>
 </header>
 
@@ -46,6 +44,10 @@
       </a>
     </div>
   </section>
+
+  <!-- Scripts comunes -->
+  <script src="js/api.js"></script>
+  <script src="js/session.js"></script>
 
 </body>
 </html>
