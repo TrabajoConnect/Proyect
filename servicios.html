@@ -20,16 +20,38 @@
             <a href="inicio.html">Inicio</a>
             <a href="servicios.html">Servicios</a>
             <a href="publicar.html">Publicar</a>
+            <a href="ofertar.html">Ofertar</a>
+            <a href="trabajo.html">Trabajo</a>
             <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
         </nav>
     </header>
 
-    <!-- Cabecera visual con un buscador (decorativo por ahora) -->
+        <!-- Cabecera visual con buscador único y opción de filtro -->
     <section class="hero">
         <h1>Encuentra al profesional que necesitas</h1>
-        <p>Conéctate con expertos en diferentes oficios y resuelve tus necesidades fácilmente.</p>
-        <input type="text" placeholder="Ejemplo: Electricista, Ebanista, Niñera...">
-        <button>Buscar</button>
+        <p>Busca por nombre, profesión o ubicación. Añade filtros específicos si lo necesitas.</p>
+        <div class="busqueda-row">
+            <input id="q" type="text" placeholder="Buscar por nombre, profesión o ubicación" />
+            <button id="btn-filtrar" type="button">Buscar</button>
+        </div>
+        <div class="filtros-box" aria-label="Filtros avanzados">
+            <label for="selector-filtro">Filtro rápido</label>
+            <select id="selector-filtro">
+                <option value="">Selecciona: Profesión o Ubicación</option>
+                <option value="servicio">Profesión</option>
+                <option value="ubicacion">Ubicación</option>
+            </select>
+            <div id="campo-servicio" class="campo-oculto" style="display:none; margin-top:6px;">
+                <input id="filtro-servicio" type="text" placeholder="Especifica la profesión" aria-label="Filtro por profesión" />
+            </div>
+            <div id="campo-ubicacion" class="campo-oculto" style="display:none; margin-top:6px;">
+                <input id="filtro-ubicacion" type="text" placeholder="Especifica la ubicación" aria-label="Filtro por ubicación" />
+            </div>
+            <div id="acciones-extra" style="display:none; margin-top:6px;">
+                <button id="btn-activar-otro" type="button" class="btn-secundario">Añadir filtro adicional</button>
+            </div>
+        </div>
+        <small class="ayuda">Sugerencia: por ejemplo, “Daniel electricista Santo Domingo”. Puedes combinar filtros de profesión y ubicación.</small>
     </section>
 
     <!-- Contenedor donde se pintan las tarjetas desde JS -->

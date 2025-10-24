@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil del profesional - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="servicios.css" />
+  <style>
+    .perfil { max-width: 900px; margin: 32px auto; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .perfil-header { display: flex; gap: 20px; align-items: center; }
+    .perfil-header img { width: 320px; height: 200px; object-fit: cover; border-radius: 8px; background: #eee; }
+    .perfil-datos p { margin: 6px 0; }
+    .perfil-contacto { display: flex; gap: 10px; margin-top: 10px; }
+    .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 14px; border-radius: 6px; text-decoration: none; display: inline-block; }
+    .btn:hover { filter: brightness(0.95); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="inicio.html">TrabajoConect</a>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a href="ofertar.html">Ofertar</a>
+      <a href="trabajo.html">Trabajo</a>
+      <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="perfil" class="perfil">
+      <div id="perfil-cargando">Cargando perfil...</div>
+      <div id="perfil-error" class="msg error" style="display:none;"></div>
+      <div id="perfil-contenido" style="display:none;">
+        <div class="perfil-header">
+          <img id="perfil-imagen" alt="Foto del profesional"/>
+          <div>
+            <h2 id="perfil-nombre">-</h2>
+            <p id="perfil-servicio" class="muted">-</p>
+          </div>
+        </div>
+        <div class="perfil-datos">
+          <p><strong>Experiencia:</strong> <span id="perfil-experiencia">-</span></p>
+          <p><strong>Ubicación:</strong> <span id="perfil-ubicacion">-</span></p>
+          <p><strong>Horario:</strong> <span id="perfil-horario">-</span></p>
+          <p><strong>Cédula:</strong> <span id="perfil-cedula">-</span></p>
+          <p><strong>Teléfono:</strong> <a id="perfil-telefono" href="" class="">-</a></p>
+          <p><strong>Correo:</strong> <a id="perfil-email" href="" class="">-</a></p>
+          <div class="perfil-contacto">
+            <a id="btn-llamar" class="btn" href="#">Llamar</a>
+            <a id="btn-email" class="btn" href="#">Enviar correo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

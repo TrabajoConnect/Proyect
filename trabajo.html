@@ -1,0 +1,40 @@
+<!--
+  Página para que socios vean solicitudes de clientes (Trabajo)
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabajo - Solicitudes de clientes</title>
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="servicios.css">
+</head>
+<body>
+    <header class="topbar">
+        <a class="logo" href="inicio.html">TrabajoConect</a>
+        <nav>
+            <a href="inicio.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="publicar.html">Publicar</a>
+            <a href="ofertar.html">Ofertar</a>
+            <a href="trabajo.html">Trabajo</a>
+            <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Solicitudes de clientes</h1>
+        <p>Explora las solicitudes y ofrece tu servicio.</p>
+    </section>
+
+    <section class="servicios">
+        <h2>Solicitudes recientes</h2>
+        <div class="lista-servicios"><!-- contenido dinámico --></div>
+    </section>
+
+    <script src="js/api.js"></script>
+    <script src="js/session.js"></script>
+    <script src="js/trabajo.js"></script>
+</body>
+</html>

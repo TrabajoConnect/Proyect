@@ -1,0 +1,72 @@
+<!--
+  Detalle de una solicitud (Ver trabajo)
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle de solicitud - TrabajoConect</title>
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="servicios.css" />
+  <style>
+    /* Copiamos el estilo de perfil para que se vea igual */
+    .perfil { max-width: 900px; margin: 32px auto; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .perfil-header { display: flex; gap: 20px; align-items: center; }
+    .perfil-header img { width: 320px; height: 200px; object-fit: cover; border-radius: 8px; background: #eee; }
+    .perfil-datos p { margin: 6px 0; }
+    .perfil-contacto { display: flex; gap: 10px; margin-top: 10px; }
+    .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 14px; border-radius: 6px; text-decoration: none; display: inline-block; }
+    .btn:hover { filter: brightness(0.95); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="inicio.html">TrabajoConect</a>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="publicar.html">Publicar</a>
+      <a href="ofertar.html">Ofertar</a>
+      <a href="trabajo.html">Trabajo</a>
+      <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Detalle del trabajo solicitado</h1>
+    <p>Revisa la información y contacta al cliente si te interesa.</p>
+  </section>
+
+  <main class="container">
+    <div id="solicitud" class="perfil">
+      <div id="solicitud-cargando">Cargando solicitud...</div>
+      <div id="solicitud-error" class="msg error" style="display:none;"></div>
+      <div id="solicitud-contenido" style="display:none;">
+        <div class="perfil-header">
+          <img id="solicitud-imagen" alt="Imagen de la solicitud" />
+          <div>
+            <h2 id="solicitud-servicio">Servicio solicitado</h2>
+            <p id="solicitud-cliente" class="muted">Cliente: -</p>
+          </div>
+        </div>
+        <div class="perfil-datos">
+          <p><strong>Descripción:</strong> <span id="solicitud-descripcion">-</span></p>
+          <p><strong>Ubicación:</strong> <span id="solicitud-ubicacion">-</span></p>
+          <p><strong>Rango estimado:</strong> <span id="solicitud-rango">—</span></p>
+          <p><strong>Teléfono:</strong> <a id="solicitud-telefono" href="">-</a></p>
+          <p><strong>Correo:</strong> <a id="solicitud-email" href="">-</a></p>
+          <div class="perfil-contacto">
+            <a id="btn-llamar" class="btn" href="#">Llamar</a>
+            <a id="btn-email" class="btn" href="#">Enviar correo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/solicitud.js"></script>
+</body>
+</html>

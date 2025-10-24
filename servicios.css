@@ -28,8 +28,8 @@
     margin: 10px 0;
 }
 
-.hero input {
-    width: 60%;
+.hero input,
+.hero select {
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
@@ -43,7 +43,21 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
 }
+
+/* Fila de búsqueda + filtro */
+.hero .busqueda-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 12px;
+    justify-content: center;
+    align-items: end;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.hero .ayuda { display: block; margin-top: 8px; color: #666; }
+@media (max-width: 900px) { .hero .busqueda-row { grid-template-columns: 1fr; } }
 
 /* Listado de servicios (tarjetas) */
 .servicios {
@@ -89,4 +103,29 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* En servicios, el enlace/botón "Ver perfil" debe verse como botón */
+.tarjeta .btn-ver-perfil {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.tarjeta .btn-ver-perfil:hover { filter: brightness(0.95); }
+
+/* Botón para ver detalle de solicitud (Trabajo) */
+.tarjeta .btn-ver-trabajo {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 8px;
+}
+.tarjeta .btn-ver-trabajo:hover { filter: brightness(0.95); }
 

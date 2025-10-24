@@ -13,7 +13,15 @@ const router = Router();
 
 // Devuelve todos los profesionales guardados
 router.get('/', ctrl.getProfesionales);
+// Devuelve los profesionales del usuario actual
+router.get('/mios', ctrl.getMisProfesionales);
 // Crea un nuevo profesional con los datos del formulario
 router.post('/', ctrl.postProfesional);
+// Actualiza un profesional del usuario actual
+router.put('/:id', ctrl.putProfesional);
+// Elimina un profesional del usuario actual
+router.delete('/:id', ctrl.deleteProfesional);
+// Devuelve un profesional por id
+router.get('/:id', ctrl.getProfesionalPorId);
 
 module.exports = router;

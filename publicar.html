@@ -64,6 +64,14 @@
     #otroServicioInput {
       display: none;
     }
+
+    /* Tabla de gestión */
+    .table-wrapper { overflow: auto; }
+    table.tabla-gestion { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tabla-gestion th, .tabla-gestion td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+    .tabla-gestion th { background: #f7f7f7; text-align: left; }
+    .tabla-gestion .btn-editar { background: #ffc107; color: #000; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    .tabla-gestion .btn-eliminar { background: #dc3545; color: #fff; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -73,6 +81,8 @@
         <a href="inicio.html">Inicio</a>
         <a href="servicios.html">Servicios</a>
         <a href="publicar.html">Publicar</a>
+      <a href="ofertar.html">Ofertar</a>
+      <a href="trabajo.html">Trabajo</a>
         <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
     </nav>
   </header>
@@ -102,6 +112,12 @@
       <label for="ubicacion">Localización:</label>
       <input type="text" id="ubicacion" name="ubicacion" required>
 
+  <label for="telefono">Teléfono de contacto (opcional):</label>
+  <input type="tel" id="telefono" name="telefono" placeholder="8095551234">
+
+  <label for="email">Correo de contacto (opcional):</label>
+  <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com">
+
       <label for="horario">Horario laboral:</label>
       <input type="text" id="horario" name="horario" required>
 
@@ -112,15 +128,46 @@
     </form>
   </section>
 
+  <section class="servicios" style="padding: 20px 10%;">
+    <h2>Mis publicaciones</h2>
+    <div class="table-wrapper">
+      <table id="tabla-publicaciones" class="tabla-gestion">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Servicio</th>
+            <th>Experiencia</th>
+            <th>Ubicación</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Horario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-publicaciones">
+          <tr><td colspan="10">Cargando tus publicaciones...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section class="resultado" id="resultado" style="display:none;">
     <img id="imagenPreview" src="" alt="Foto del trabajador">
+    <p><strong>ID publicación:</strong> <span id="resId">-</span></p>
     <p><strong>Nombre:</strong> <span id="resNombre"></span></p>
     <p><strong>Cédula:</strong> <span id="resCedula"></span></p>
     <p><strong>Servicio:</strong> <span id="resServicio"></span></p>
     <p><strong>Experiencia:</strong> <span id="resExperiencia"></span></p>
     <p><strong>Ubicación:</strong> <span id="resUbicacion"></span></p>
+    <p><strong>Teléfono:</strong> <span id="resTelefono"></span></p>
+    <p><strong>Correo:</strong> <span id="resEmail"></span></p>
     <p><strong>Horario:</strong> <span id="resHorario"></span></p>
-    <div class="modificar-btn" onclick="modificarDatos()">Modificar</div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+      <button id="btn-modificar-publicacion" class="modificar-btn" type="button">Modificar</button>
+      <button id="btn-eliminar-publicacion" class="modificar-btn" type="button" style="background:#dc3545; color:#fff;">Eliminar</button>
+    </div>
   </section>
 
   <!-- Primero el cliente de API, luego sesión y el script que maneja este formulario -->

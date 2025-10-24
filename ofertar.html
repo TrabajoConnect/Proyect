@@ -1,0 +1,136 @@
+<!--
+  Página para que clientes creen una solicitud (Ofertar)
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertar - Solicitar un servicio</title>
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="publicar.css">
+        <style>
+            /* Tabla de gestión */
+            .table-wrapper { overflow: auto; }
+            table.tabla-gestion { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            .tabla-gestion th, .tabla-gestion td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+            .tabla-gestion th { background: #f7f7f7; text-align: left; }
+            .tabla-gestion .btn-editar { background: #ffc107; color: #000; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+            .tabla-gestion .btn-eliminar { background: #dc3545; color: #fff; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+        </style>
+</head>
+<body>
+    <header class="topbar">
+        <a class="logo" href="inicio.html">TrabajoConect</a>
+        <nav>
+            <a href="inicio.html">Inicio</a>
+            <a href="servicios.html">Servicios</a>
+            <a href="publicar.html">Publicar</a>
+            <a href="ofertar.html">Ofertar</a>
+            <a href="trabajo.html">Trabajo</a>
+            <a id="menu-auth-link" class="btn-registrarse" href="login.html">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Solicitar un servicio</h1>
+        <p>Describe qué necesitas y recibirás propuestas de los socios.</p>
+    </section>
+
+    <section class="formulario">
+        <form id="form-ofertar">
+            <div class="campo">
+                <label>Tu nombre</label>
+                <input type="text" name="nombre" required placeholder="Ej: Carlos Ramírez">
+            </div>
+            <div class="campo">
+                <label>Ubicación</label>
+                <input type="text" name="ubicacion" required placeholder="Ciudad / Sector">
+            </div>
+            <div class="campo-group">
+                <div class="campo">
+                    <label>Teléfono de contacto (opcional)</label>
+                    <input type="tel" name="telefono" placeholder="8095551234">
+                </div>
+                <div class="campo">
+                    <label>Correo de contacto (opcional)</label>
+                    <input type="email" name="email" placeholder="tucorreo@ejemplo.com">
+                </div>
+            </div>
+            <div class="campo">
+                <label>Tipo de servicio</label>
+                <select name="servicio" required>
+                    <option value="">Selecciona un servicio</option>
+                    <option>Electricista</option>
+                    <option>Ebanista</option>
+                    <option>Niñera</option>
+                    <option>Tutor</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Descripción del problema</label>
+                <textarea name="descripcion" rows="4" required placeholder="Cuenta brevemente qué necesitas"></textarea>
+            </div>
+            <div class="campo">
+                <label>Foto (opcional, URL)</label>
+                <input type="url" name="imagen" placeholder="https://...">
+            </div>
+            <div class="campo-group">
+                <div class="campo">
+                    <label>Precio mínimo (opcional)</label>
+                    <input type="number" name="precio_min" step="0.01" min="0" placeholder="0">
+                </div>
+                <div class="campo">
+                    <label>Precio máximo (opcional)</label>
+                    <input type="number" name="precio_max" step="0.01" min="0" placeholder="0">
+                </div>
+            </div>
+            <button type="submit">Publicar solicitud</button>
+        </form>
+
+                <div id="resultado" class="resultado" style="display:none;">
+                    <p><strong>ID oferta:</strong> <span id="resOfId">-</span></p>
+                    <p><strong>Cliente:</strong> <span id="resOfNombre"></span></p>
+                    <p><strong>Ubicación:</strong> <span id="resOfUbicacion"></span></p>
+                    <p><strong>Servicio:</strong> <span id="resOfServicio"></span></p>
+                    <p><strong>Descripción:</strong> <span id="resOfDescripcion"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="resOfTelefono"></span></p>
+                    <p><strong>Correo:</strong> <span id="resOfEmail"></span></p>
+                    <p><strong>Rango estimado:</strong> <span id="resOfRango"></span></p>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+                        <button id="btn-modificar-oferta" class="modificar-btn" type="button">Modificar</button>
+                        <button id="btn-eliminar-oferta" class="modificar-btn" type="button" style="background:#dc3545; color:#fff;">Eliminar</button>
+                    </div>
+                </div>
+    </section>
+
+    <section class="servicios" style="padding: 20px 10%;">
+        <h2>Mis ofertas</h2>
+                <div class="table-wrapper">
+                    <table id="tabla-ofertas" class="tabla-gestion">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Ubicación</th>
+                                <th>Servicio</th>
+                                <th>Descripción</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Precio mín</th>
+                                <th>Precio máx</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-ofertas">
+                            <tr><td colspan="10">Cargando tus ofertas...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+    </section>
+
+    <script src="js/api.js"></script>
+    <script src="js/session.js"></script>
+    <script src="js/ofertar.js"></script>
+</body>
+</html>

@@ -8,16 +8,25 @@
 // API mínima con Express
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('../db/database');
+const { attachUser } = require('./middlewares/auth-lite');
 
 const app = express();
 // Habilita que navegadores de otra dirección (tu frontend) puedan llamar a esta API
 app.use(cors());
 // Permite que la API entienda cuerpos JSON enviados por el navegador
 app.use(express.json());
+// Adjunta req.userId si el frontend envía X-User-Id
+app.use(attachUser);
+
+// Servir archivos estáticos del frontend (HTML/CSS/JS) desde la raíz del proyecto
+// Esto permite abrir http://localhost:3000/servicios.html (y el resto de páginas)
+app.use(express.static(path.resolve(__dirname, '..')));
 
 // Rutas y middlewares
 const profesionalesRouter = require('./routes/profesionales.routes');
+const solicitudesRouter = require('./routes/solicitudes.routes');
 const authRouter = require('./routes/auth.routes');
 const { errorHandler } = require('./middlewares/error');
 /**
@@ -48,6 +57,9 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 // Todas las rutas que empiezan con /api/profesionales se atienden aquí
 app.use('/api/profesionales', profesionalesRouter);
+
+// Rutas de solicitudes (Ofertar)
+app.use('/api/solicitudes', solicitudesRouter);
 
 // Rutas de autenticación (registro e inicio de sesión)
 app.use('/api/auth', authRouter);
