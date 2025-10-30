@@ -7,7 +7,7 @@ services:
     region: oregon
     branch: develop
     healthCheckPath: /health
-    buildCommand: npm install
+    buildCommand: npm install && npm rebuild sqlite3 --build-from-source
     startCommand: node api/server.js
     envVars:
       - key: NODE_VERSION
@@ -16,3 +16,5 @@ services:
         value: production
       - key: DB_PATH
         value: /tmp/trabajoconect.db
+      - key: npm_config_build_from_source
+        value: "true"
