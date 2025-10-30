@@ -7,7 +7,7 @@ services:
     region: oregon
     branch: develop
     healthCheckPath: /health
-  buildCommand: npm install
+    buildCommand: npm install
     startCommand: node api/server.js
     envVars:
       - key: NODE_VERSION
