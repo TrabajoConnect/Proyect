@@ -9,8 +9,12 @@
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
-const DB_PATH = path.join(__dirname, 'trabajoconect.db');
+// Permite configurar la ruta de la DB por variable de entorno (Render Free: /tmp/trabajoconect.db)
+const DEFAULT_PATH = path.join(__dirname, 'trabajoconect.db');
+const DB_PATH = process.env.DB_PATH || DEFAULT_PATH;
 const db = new sqlite3.Database(DB_PATH);
+// Log informativo para diagnosticar en despliegues
+try { console.log(`[DB] Using SQLite at: ${DB_PATH}`); } catch(_) {}
 
 // Al iniciar, creamos las tablas necesarias si todavía no existen
 db.serialize(() => {

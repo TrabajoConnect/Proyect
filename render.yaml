@@ -5,12 +5,14 @@ services:
     plan: free
     autoDeploy: true
     region: oregon
+    branch: develop
+    healthCheckPath: /health
     buildCommand: ""
     startCommand: node api/server.js
     envVars:
       - key: NODE_VERSION
         value: 18
-    disk:
-      name: db
-      mountPath: /app/db
-      sizeGB: 1
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /tmp/trabajoconect.db
