@@ -13,6 +13,13 @@ const db = require('../db/database');
 const { attachUser } = require('./middlewares/auth-lite');
 
 const app = express();
+// Log de errores globales para diagnosticar fallas en Render
+process.on('unhandledRejection', (reason) => {
+  try { console.error('[unhandledRejection]', reason); } catch(_) {}
+});
+process.on('uncaughtException', (err) => {
+  try { console.error('[uncaughtException]', err); } catch(_) {}
+});
 // Habilita que navegadores de otra dirección (tu frontend) puedan llamar a esta API
 app.use(cors());
 // Permite que la API entienda cuerpos JSON enviados por el navegador
@@ -84,5 +91,5 @@ app.listen(PORT, () => {
       console.log('Seed verificado.');
     });
   }
-  console.log(`API escuchando en http://localhost:${PORT}`);
+  console.log(`API escuchando en http://localhost:${PORT} (NODE_ENV=${process.env.NODE_ENV || 'dev'})`);
 });
