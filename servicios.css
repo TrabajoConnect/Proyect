@@ -51,7 +51,7 @@
     display: flex;
     gap: 12px;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     max-width: 950px;
     margin: 20px auto 0;
 }
@@ -62,8 +62,9 @@
     align-items: center;
     background: #fff;
     border: 1px solid #ccc;
-    border-radius: 40px;
+    border-radius: 999px;
     padding-left: 18px;
+    min-height: 56px;
     min-width: 0;
 }
 
@@ -85,6 +86,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .hero .search-field svg,
@@ -95,15 +100,17 @@
 }
 
 .hero .btn-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    border: 1px solid var(--primary);
-    background: #fff;
-    color: var(--primary);
+    min-width: 56px;
+    aspect-ratio: 1;
+    border-radius: 18px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: stretch;
+    transform: translateY(-1.25mm);
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -121,11 +128,138 @@
 .hero .ayuda { display: block; margin-top: 8px; color: #666; }
 @media (max-width: 900px) {
     .hero .busqueda-row { flex-direction: column; }
-    .hero .btn-icon { width: 100%; border-radius: 40px; }
-    .hero .btn-icon svg { margin-right: 6px; }
+    .hero .btn-icon {
+        width: 100%;
+        aspect-ratio: auto;
+        border-radius: 40px;
+        align-self: auto;
+        transform: none;
+    }
+    .hero .btn-icon svg { margin-right: 0; }
 }
 
-.filtros-box[hidden] { display: none; }
+body.modal-open {
+    overflow: hidden;
+}
+
+.filtros-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 999;
+}
+
+.filtros-modal[hidden] {
+    display: none;
+}
+
+.filtros-modal__dialog {
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px;
+    position: relative;
+    width: min(700px, 94vw);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    animation: modalIn 0.2s ease-out;
+}
+
+.filtros-modal__dialog h3 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.modal-subtitle {
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #444;
+}
+
+.modal-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.modal-column h4 {
+    margin-bottom: 6px;
+    font-size: 18px;
+}
+
+.column-hint {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.modal-column input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.btn-secundario,
+.btn-primario {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-secundario {
+    background: #f2f2f2;
+    color: #333;
+}
+
+.btn-primario {
+    background: var(--primary);
+    color: #fff;
+}
+
+@media (max-width: 640px) {
+    .filtros-modal__dialog {
+        padding: 24px 20px 28px;
+    }
+    .modal-columns {
+        grid-template-columns: 1fr;
+    }
+    .modal-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-secundario,
+    .btn-primario {
+        width: 100%;
+    }
+}
+
+@keyframes modalIn {
+    from { transform: translateY(16px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
 
 /* Listado de servicios (tarjetas) */
 .servicios {

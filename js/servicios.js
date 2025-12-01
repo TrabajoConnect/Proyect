@@ -80,74 +80,89 @@ async function cargarProfesionales() {
   }
 }
 
-function hookFiltros() {
+function hookFiltros(options = {}) {
   const btnBuscar = document.getElementById('btn-buscar');
   if (btnBuscar) btnBuscar.addEventListener('click', cargarProfesionales);
   const q = document.getElementById('q');
   if (q) q.addEventListener('keyup', (e) => { if (e.key === 'Enter') cargarProfesionales(); });
 
-  const filtrosBox = document.getElementById('filtros-box');
+  const modal = document.getElementById('filtros-modal');
+  const dialog = modal ? modal.querySelector('.filtros-modal__dialog') : null;
   const btnToggleFiltros = document.getElementById('btn-toggle-filtros');
-  if (btnToggleFiltros && filtrosBox) {
-    btnToggleFiltros.addEventListener('click', () => {
-      const hidden = filtrosBox.hasAttribute('hidden');
-      if (hidden) {
-        filtrosBox.removeAttribute('hidden');
-      } else {
-        filtrosBox.setAttribute('hidden', '');
-      }
-      btnToggleFiltros.setAttribute('aria-expanded', hidden ? 'true' : 'false');
-      btnToggleFiltros.setAttribute('aria-label', hidden ? 'Ocultar filtros' : 'Mostrar filtros');
+  const btnCerrar = document.getElementById('btn-cerrar-filtros');
+  const btnAplicar = document.getElementById('btn-aplicar-filtros');
+  const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+  const inputServicio = document.getElementById('filtro-servicio');
+  const inputUbicacion = document.getElementById('filtro-ubicacion');
+
+  const bloquearScroll = (activar) => {
+    if (activar) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  };
+
+  const actualizarToggleState = (abierto) => {
+    if (!btnToggleFiltros) return;
+    btnToggleFiltros.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    btnToggleFiltros.setAttribute('aria-label', abierto ? 'Ocultar filtros' : 'Mostrar filtros');
+  };
+
+  const abrirModalFiltros = () => {
+    if (!modal) return;
+    modal.removeAttribute('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    bloquearScroll(true);
+    actualizarToggleState(true);
+    inputServicio?.focus();
+  };
+
+  const cerrarModalFiltros = () => {
+    if (!modal) return;
+    modal.setAttribute('hidden', '');
+    modal.setAttribute('aria-hidden', 'true');
+    bloquearScroll(false);
+    actualizarToggleState(false);
+  };
+
+  if (btnToggleFiltros) btnToggleFiltros.addEventListener('click', abrirModalFiltros);
+  if (btnCerrar) btnCerrar.addEventListener('click', cerrarModalFiltros);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) cerrarModalFiltros();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.hasAttribute('hidden')) cerrarModalFiltros();
+  });
+
+  if (btnAplicar) {
+    btnAplicar.addEventListener('click', () => {
+      cerrarModalFiltros();
+      cargarProfesionales();
     });
   }
 
-  const selector = document.getElementById('selector-filtro');
-  const campoServicio = document.getElementById('campo-servicio');
-  const campoUbicacion = document.getElementById('campo-ubicacion');
-  const inputServicio = document.getElementById('filtro-servicio');
-  const inputUbicacion = document.getElementById('filtro-ubicacion');
-  const acciones = document.getElementById('acciones-extra');
-  const btnOtro = document.getElementById('btn-activar-otro');
-
-  function actualizarUI() {
-    const sel = selector ? selector.value : '';
-    if (!selector) return;
-    if (!sel) {
-      if (campoServicio) campoServicio.style.display = 'none';
-      if (campoUbicacion) campoUbicacion.style.display = 'none';
-      if (acciones) acciones.style.display = 'none';
-      return;
-    }
-    if (sel === 'servicio') {
-      if (campoServicio) { campoServicio.style.display = ''; inputServicio && inputServicio.focus(); }
-      if (campoUbicacion && !inputUbicacion.value) campoUbicacion.style.display = 'none';
-      if (acciones) { acciones.style.display = ''; if (btnOtro) btnOtro.textContent = 'Añadir filtro por ubicación'; }
-    } else if (sel === 'ubicacion') {
-      if (campoUbicacion) { campoUbicacion.style.display = ''; inputUbicacion && inputUbicacion.focus(); }
-      if (campoServicio && !inputServicio.value) campoServicio.style.display = 'none';
-      if (acciones) { acciones.style.display = ''; if (btnOtro) btnOtro.textContent = 'Añadir filtro por profesión'; }
-    }
-    // Si ambos ya visibles, oculta el botón extra
-    const ambosVisibles = campoServicio && campoServicio.style.display !== 'none' && campoUbicacion && campoUbicacion.style.display !== 'none';
-    if (acciones) acciones.style.display = ambosVisibles ? 'none' : '';
+  if (btnLimpiar) {
+    btnLimpiar.addEventListener('click', () => {
+      if (inputServicio) inputServicio.value = '';
+      if (inputUbicacion) inputUbicacion.value = '';
+      cargarProfesionales();
+    });
   }
 
-  if (selector) selector.addEventListener('change', actualizarUI);
-  if (btnOtro) btnOtro.addEventListener('click', () => {
-    const sel = selector ? selector.value : '';
-    if (sel === 'servicio') {
-      if (campoUbicacion) { campoUbicacion.style.display = ''; inputUbicacion && inputUbicacion.focus(); }
-    } else if (sel === 'ubicacion') {
-      if (campoServicio) { campoServicio.style.display = ''; inputServicio && inputServicio.focus(); }
-    }
-    if (acciones) acciones.style.display = 'none';
+  [inputServicio, inputUbicacion].forEach((input) => {
+    if (!input) return;
+    input.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        btnAplicar ? btnAplicar.click() : cargarProfesionales();
+      }
+    });
   });
 
-  // Enter para inputs de filtro
-  if (inputServicio) inputServicio.addEventListener('keyup', (e) => { if (e.key === 'Enter') cargarProfesionales(); });
-  if (inputUbicacion) inputUbicacion.addEventListener('keyup', (e) => { if (e.key === 'Enter') cargarProfesionales(); });
-
-  actualizarUI();
+  if (options.autoOpen) abrirModalFiltros();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -156,29 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const q = params.get('q');
   const servicio = params.get('servicio');
   const ubicacion = params.get('ubicacion');
-  const filtrosBox = document.getElementById('filtros-box');
-  const btnToggleFiltros = document.getElementById('btn-toggle-filtros');
-  const abrirFiltros = () => {
-    if (!filtrosBox) return;
-    filtrosBox.removeAttribute('hidden');
-    if (btnToggleFiltros) {
-      btnToggleFiltros.setAttribute('aria-expanded', 'true');
-      btnToggleFiltros.setAttribute('aria-label', 'Ocultar filtros');
-    }
-  };
   if (q && document.getElementById('q')) document.getElementById('q').value = q;
   if (servicio && document.getElementById('filtro-servicio')) {
     document.getElementById('filtro-servicio').value = servicio;
-    const cs = document.getElementById('campo-servicio'); if (cs) cs.style.display = '';
-    const selector = document.getElementById('selector-filtro'); if (selector) selector.value = 'servicio';
-    abrirFiltros();
   }
   if (ubicacion && document.getElementById('filtro-ubicacion')) {
     document.getElementById('filtro-ubicacion').value = ubicacion;
-    const cu = document.getElementById('campo-ubicacion'); if (cu) cu.style.display = '';
-    const selector = document.getElementById('selector-filtro'); if (selector && !servicio) selector.value = 'ubicacion';
-    abrirFiltros();
   }
-  hookFiltros();
+  hookFiltros({ autoOpen: Boolean(servicio || ubicacion) });
   cargarProfesionales();
 });

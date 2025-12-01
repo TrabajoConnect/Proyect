@@ -35,7 +35,7 @@
                 <input id="q" type="text" placeholder="Buscar por nombre, profesión o ubicación" />
                 <button id="btn-buscar" type="button" aria-label="Buscar servicios">
                     <svg viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
-                        <path d="M15.5 14h-.79l-.28-.27A6 6 0 1 0 14 15.5l.27.28v.79L20 21l1-1-5.5-6zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"></path>
+                        <path d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14m0-2a9 9 0 1 0 5.3 16.3l4.4 4.4 1.4-1.4-4.4-4.4A9 9 0 0 0 11 2z"></path>
                     </svg>
                 </button>
             </div>
@@ -45,25 +45,32 @@
                 </svg>
             </button>
         </div>
-        <div id="filtros-box" class="filtros-box" aria-label="Filtros avanzados" hidden>
-            <label for="selector-filtro">Filtro rápido</label>
-            <select id="selector-filtro">
-                <option value="">Selecciona: Profesión o Ubicación</option>
-                <option value="servicio">Profesión</option>
-                <option value="ubicacion">Ubicación</option>
-            </select>
-            <div id="campo-servicio" class="campo-oculto" style="display:none; margin-top:6px;">
-                <input id="filtro-servicio" type="text" placeholder="Especifica la profesión" aria-label="Filtro por profesión" />
-            </div>
-            <div id="campo-ubicacion" class="campo-oculto" style="display:none; margin-top:6px;">
-                <input id="filtro-ubicacion" type="text" placeholder="Especifica la ubicación" aria-label="Filtro por ubicación" />
-            </div>
-            <div id="acciones-extra" style="display:none; margin-top:6px;">
-                <button id="btn-activar-otro" type="button" class="btn-secundario">Añadir filtro adicional</button>
-            </div>
-        </div>
         <small class="ayuda">Sugerencia: por ejemplo, “Daniel electricista Santo Domingo”. Puedes combinar filtros de profesión y ubicación.</small>
     </section>
+
+    <div id="filtros-modal" class="filtros-modal" aria-hidden="true" hidden>
+        <div class="filtros-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="titulo-filtros">
+            <button id="btn-cerrar-filtros" type="button" class="modal-close" aria-label="Cerrar filtros">×</button>
+            <h3 id="titulo-filtros">Filtros</h3>
+            <p class="modal-subtitle">Refina tu búsqueda por ubicación y profesión.</p>
+            <div class="modal-columns">
+                <div class="modal-column">
+                    <h4>Ubicación</h4>
+                    <p class="column-hint">Ingresa ciudad, provincia o sector.</p>
+                    <input id="filtro-ubicacion" type="text" placeholder="Ej. Santo Domingo" aria-label="Filtro por ubicación" />
+                </div>
+                <div class="modal-column">
+                    <h4>Profesiones</h4>
+                    <p class="column-hint">Describe el oficio que buscas.</p>
+                    <input id="filtro-servicio" type="text" placeholder="Ej. Electricista" aria-label="Filtro por profesión" />
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-limpiar-filtros" type="button" class="btn-secundario">Limpiar</button>
+                <button id="btn-aplicar-filtros" type="button" class="btn-primario">Aplicar filtros</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Contenedor donde se pintan las tarjetas desde JS -->
     <section class="servicios">
