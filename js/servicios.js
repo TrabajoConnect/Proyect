@@ -87,13 +87,42 @@ function hookFiltros(options = {}) {
   if (q) q.addEventListener('keyup', (e) => { if (e.key === 'Enter') cargarProfesionales(); });
 
   const modal = document.getElementById('filtros-modal');
-  const dialog = modal ? modal.querySelector('.filtros-modal__dialog') : null;
   const btnToggleFiltros = document.getElementById('btn-toggle-filtros');
   const btnCerrar = document.getElementById('btn-cerrar-filtros');
   const btnAplicar = document.getElementById('btn-aplicar-filtros');
   const btnLimpiar = document.getElementById('btn-limpiar-filtros');
   const inputServicio = document.getElementById('filtro-servicio');
   const inputUbicacion = document.getElementById('filtro-ubicacion');
+  let dropdownAbierto = null;
+
+  const handleDropdownWheel = (event) => {
+    if (!dropdownAbierto) return;
+    const { list } = dropdownAbierto;
+    if (list.contains(event.target)) return; // permitir scroll natural dentro del listado
+    event.preventDefault();
+    list.scrollTop += event.deltaY;
+  };
+
+  document.addEventListener('wheel', handleDropdownWheel, { passive: false });
+
+  const cerrarDropdowns = () => {
+    if (!dropdownAbierto) return;
+    dropdownAbierto.list.setAttribute('hidden', '');
+    dropdownAbierto.button.setAttribute('aria-expanded', 'false');
+    dropdownAbierto = null;
+  };
+
+  const abrirDropdown = (button, list) => {
+    if (!button || !list) return;
+    if (dropdownAbierto?.list === list) {
+      cerrarDropdowns();
+      return;
+    }
+    cerrarDropdowns();
+    list.removeAttribute('hidden');
+    button.setAttribute('aria-expanded', 'true');
+    dropdownAbierto = { button, list };
+  };
 
   const bloquearScroll = (activar) => {
     if (activar) {
@@ -111,6 +140,7 @@ function hookFiltros(options = {}) {
 
   const abrirModalFiltros = () => {
     if (!modal) return;
+    cerrarDropdowns();
     modal.removeAttribute('hidden');
     modal.setAttribute('aria-hidden', 'false');
     bloquearScroll(true);
@@ -122,6 +152,7 @@ function hookFiltros(options = {}) {
     if (!modal) return;
     modal.setAttribute('hidden', '');
     modal.setAttribute('aria-hidden', 'true');
+    cerrarDropdowns();
     bloquearScroll(false);
     actualizarToggleState(false);
   };
@@ -130,11 +161,22 @@ function hookFiltros(options = {}) {
   if (btnCerrar) btnCerrar.addEventListener('click', cerrarModalFiltros);
   if (modal) {
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) cerrarModalFiltros();
+      if (e.target !== modal) return;
+      if (dropdownAbierto) {
+        cerrarDropdowns();
+        return;
+      }
+      cerrarModalFiltros();
     });
   }
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.hasAttribute('hidden')) cerrarModalFiltros();
+    if (e.key !== 'Escape' || !modal || modal.hasAttribute('hidden')) return;
+    if (dropdownAbierto) {
+      cerrarDropdowns();
+      return;
+    }
+    cerrarModalFiltros();
   });
 
   if (btnAplicar) {
@@ -160,6 +202,47 @@ function hookFiltros(options = {}) {
         btnAplicar ? btnAplicar.click() : cargarProfesionales();
       }
     });
+  });
+
+  const dropdownArrows = document.querySelectorAll('.dropdown-arrow');
+  dropdownArrows.forEach((button) => {
+    const listId = button.dataset.dropdown;
+    const inputId = button.dataset.input;
+    if (!listId || !inputId) return;
+    const list = document.getElementById(listId);
+    const input = document.getElementById(inputId);
+    if (!list || !input) return;
+
+    button.setAttribute('aria-haspopup', 'listbox');
+    button.setAttribute('aria-expanded', 'false');
+
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isHidden = list.hasAttribute('hidden');
+      if (isHidden) {
+        abrirDropdown(button, list);
+      } else {
+        cerrarDropdowns();
+      }
+    });
+
+    list.addEventListener('click', (event) => {
+      const optionBtn = event.target.closest('button[data-value]');
+      if (!optionBtn) return;
+      event.preventDefault();
+      const value = optionBtn.dataset.value || optionBtn.textContent.trim();
+      input.value = value;
+      cerrarDropdowns();
+      input.focus();
+    });
+
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!dropdownAbierto) return;
+    const { button, list } = dropdownAbierto;
+    if (button.contains(event.target) || list.contains(event.target)) return;
+    cerrarDropdowns();
   });
 
   if (options.autoOpen) abrirModalFiltros();

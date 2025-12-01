@@ -213,6 +213,85 @@ body.modal-open {
     font-size: 15px;
 }
 
+.modal-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.modal-input-group input {
+    padding-right: 46px;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    cursor: pointer;
+    max-height: 240px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.dropdown-arrow svg { width: 18px; height: 18px; fill: currentColor; }
+
+.dropdown-options {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 10;
+}
+
+.dropdown-options[hidden] {
+    display: none;
+}
+
+.dropdown-options button {
+    text-align: left;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.dropdown-options button:hover,
+.dropdown-options button:focus-visible {
+    background: rgba(0, 123, 255, 0.08);
+    outline: none;
+}
+
+.dropdown-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 999px;
+}
+
 .modal-actions {
     display: flex;
     justify-content: flex-end;

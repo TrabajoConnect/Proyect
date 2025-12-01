@@ -57,12 +57,60 @@
                 <div class="modal-column">
                     <h4>Ubicación</h4>
                     <p class="column-hint">Ingresa ciudad, provincia o sector.</p>
-                    <input id="filtro-ubicacion" type="text" placeholder="Ej. Santo Domingo" aria-label="Filtro por ubicación" />
+                    <div class="modal-input-group">
+                        <input id="filtro-ubicacion" type="text" placeholder="Ej. Santo Domingo" aria-label="Filtro por ubicación" />
+                        <button type="button" class="dropdown-arrow" aria-label="Ver ubicaciones" data-dropdown="lista-ubicaciones" data-input="filtro-ubicacion">
+                            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6H5z"></path></svg>
+                        </button>
+                        <div id="lista-ubicaciones" class="dropdown-options" role="listbox" hidden>
+                            <button type="button" data-value="Santo Domingo">Santo Domingo</button>
+                            <button type="button" data-value="Santiago">Santiago</button>
+                            <button type="button" data-value="La Romana">La Romana</button>
+                            <button type="button" data-value="La Altagracia">La Altagracia</button>
+                            <button type="button" data-value="Punta Cana">Punta Cana</button>
+                            <button type="button" data-value="San Cristóbal">San Cristóbal</button>
+                            <button type="button" data-value="Puerto Plata">Puerto Plata</button>
+                            <button type="button" data-value="Bávaro">Bávaro</button>
+                            <button type="button" data-value="La Vega">La Vega</button>
+                            <button type="button" data-value="Jarabacoa">Jarabacoa</button>
+                            <button type="button" data-value="San Pedro de Macorís">San Pedro de Macorís</button>
+                            <button type="button" data-value="Higüey">Higüey</button>
+                            <button type="button" data-value="Barahona">Barahona</button>
+                            <button type="button" data-value="Moca">Moca</button>
+                            <button type="button" data-value="Naco">Naco</button>
+                            <button type="button" data-value="Piantini">Piantini</button>
+                            <button type="button" data-value="Otros">Otros</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-column">
                     <h4>Profesiones</h4>
                     <p class="column-hint">Describe el oficio que buscas.</p>
-                    <input id="filtro-servicio" type="text" placeholder="Ej. Electricista" aria-label="Filtro por profesión" />
+                    <div class="modal-input-group">
+                        <input id="filtro-servicio" type="text" placeholder="Ej. Electricista" aria-label="Filtro por profesión" />
+                        <button type="button" class="dropdown-arrow" aria-label="Ver profesiones" data-dropdown="lista-profesiones" data-input="filtro-servicio">
+                            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6H5z"></path></svg>
+                        </button>
+                        <div id="lista-profesiones" class="dropdown-options" role="listbox" hidden>
+                            <button type="button" data-value="Electricista">Electricista</button>
+                            <button type="button" data-value="Plomería">Plomería</button>
+                            <button type="button" data-value="Ebanista">Ebanista</button>
+                            <button type="button" data-value="Tutor">Tutor</button>
+                            <button type="button" data-value="Carpintero">Carpintero</button>
+                            <button type="button" data-value="Cerrajero">Cerrajero</button>
+                            <button type="button" data-value="Jardinería">Jardinería</button>
+                            <button type="button" data-value="Pintor">Pintor</button>
+                            <button type="button" data-value="Albañil">Albañil</button>
+                            <button type="button" data-value="Mecánico">Mecánico</button>
+                            <button type="button" data-value="Chef">Chef</button>
+                            <button type="button" data-value="Programador">Programador</button>
+                            <button type="button" data-value="Diseñador">Diseñador</button>
+                            <button type="button" data-value="Niñera">Niñera</button>
+                            <button type="button" data-value="Servicios de limpieza">Servicios de limpieza</button>
+                            <button type="button" data-value="Seguridad">Seguridad</button>
+                            <button type="button" data-value="Otros">Otros</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-actions">
