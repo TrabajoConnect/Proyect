@@ -31,10 +31,21 @@
         <h1>Encuentra al profesional que necesitas</h1>
         <p>Busca por nombre, profesión o ubicación. Añade filtros específicos si lo necesitas.</p>
         <div class="busqueda-row">
-            <input id="q" type="text" placeholder="Buscar por nombre, profesión o ubicación" />
-            <button id="btn-filtrar" type="button">Buscar</button>
+            <div class="search-field">
+                <input id="q" type="text" placeholder="Buscar por nombre, profesión o ubicación" />
+                <button id="btn-buscar" type="button" aria-label="Buscar servicios">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
+                        <path d="M15.5 14h-.79l-.28-.27A6 6 0 1 0 14 15.5l.27.28v.79L20 21l1-1-5.5-6zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"></path>
+                    </svg>
+                </button>
+            </div>
+            <button id="btn-toggle-filtros" class="btn-icon" type="button" aria-label="Mostrar filtros" aria-expanded="false" aria-controls="filtros-box">
+                <svg viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
+                    <path d="M3 5h18v2H3zm4 6h10v2H7zm4 6h2v2h-2z"></path>
+                </svg>
+            </button>
         </div>
-        <div class="filtros-box" aria-label="Filtros avanzados">
+        <div id="filtros-box" class="filtros-box" aria-label="Filtros avanzados" hidden>
             <label for="selector-filtro">Filtro rápido</label>
             <select id="selector-filtro">
                 <option value="">Selecciona: Profesión o Ubicación</option>

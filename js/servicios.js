@@ -81,10 +81,25 @@ async function cargarProfesionales() {
 }
 
 function hookFiltros() {
-  const btn = document.getElementById('btn-filtrar');
-  if (btn) btn.addEventListener('click', cargarProfesionales);
+  const btnBuscar = document.getElementById('btn-buscar');
+  if (btnBuscar) btnBuscar.addEventListener('click', cargarProfesionales);
   const q = document.getElementById('q');
   if (q) q.addEventListener('keyup', (e) => { if (e.key === 'Enter') cargarProfesionales(); });
+
+  const filtrosBox = document.getElementById('filtros-box');
+  const btnToggleFiltros = document.getElementById('btn-toggle-filtros');
+  if (btnToggleFiltros && filtrosBox) {
+    btnToggleFiltros.addEventListener('click', () => {
+      const hidden = filtrosBox.hasAttribute('hidden');
+      if (hidden) {
+        filtrosBox.removeAttribute('hidden');
+      } else {
+        filtrosBox.setAttribute('hidden', '');
+      }
+      btnToggleFiltros.setAttribute('aria-expanded', hidden ? 'true' : 'false');
+      btnToggleFiltros.setAttribute('aria-label', hidden ? 'Ocultar filtros' : 'Mostrar filtros');
+    });
+  }
 
   const selector = document.getElementById('selector-filtro');
   const campoServicio = document.getElementById('campo-servicio');
@@ -141,16 +156,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const q = params.get('q');
   const servicio = params.get('servicio');
   const ubicacion = params.get('ubicacion');
+  const filtrosBox = document.getElementById('filtros-box');
+  const btnToggleFiltros = document.getElementById('btn-toggle-filtros');
+  const abrirFiltros = () => {
+    if (!filtrosBox) return;
+    filtrosBox.removeAttribute('hidden');
+    if (btnToggleFiltros) {
+      btnToggleFiltros.setAttribute('aria-expanded', 'true');
+      btnToggleFiltros.setAttribute('aria-label', 'Ocultar filtros');
+    }
+  };
   if (q && document.getElementById('q')) document.getElementById('q').value = q;
   if (servicio && document.getElementById('filtro-servicio')) {
     document.getElementById('filtro-servicio').value = servicio;
     const cs = document.getElementById('campo-servicio'); if (cs) cs.style.display = '';
     const selector = document.getElementById('selector-filtro'); if (selector) selector.value = 'servicio';
+    abrirFiltros();
   }
   if (ubicacion && document.getElementById('filtro-ubicacion')) {
     document.getElementById('filtro-ubicacion').value = ubicacion;
     const cu = document.getElementById('campo-ubicacion'); if (cu) cu.style.display = '';
     const selector = document.getElementById('selector-filtro'); if (selector && !servicio) selector.value = 'ubicacion';
+    abrirFiltros();
   }
   hookFiltros();
   cargarProfesionales();

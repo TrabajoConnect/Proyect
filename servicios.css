@@ -48,16 +48,84 @@
 
 /* Fila de búsqueda + filtro */
 .hero .busqueda-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
+    display: flex;
     gap: 12px;
     justify-content: center;
-    align-items: end;
-    max-width: 1000px;
-    margin: 0 auto;
+    align-items: center;
+    max-width: 950px;
+    margin: 20px auto 0;
 }
+
+.hero .search-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    padding-left: 18px;
+    min-width: 0;
+}
+
+.hero .search-field input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.hero .search-field input:focus { outline: none; }
+
+.hero .search-field button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero .search-field svg,
+.hero .btn-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.hero .btn-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: 1px solid var(--primary);
+    background: #fff;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.hero .btn-icon[aria-expanded="true"] {
+    background: var(--primary);
+    color: #fff;
+}
+
+.hero .btn-icon:focus-visible,
+.hero .search-field button:focus-visible {
+    outline: 3px solid rgba(0, 123, 255, 0.4);
+    outline-offset: 2px;
+}
+
 .hero .ayuda { display: block; margin-top: 8px; color: #666; }
-@media (max-width: 900px) { .hero .busqueda-row { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+    .hero .busqueda-row { flex-direction: column; }
+    .hero .btn-icon { width: 100%; border-radius: 40px; }
+    .hero .btn-icon svg { margin-right: 6px; }
+}
+
+.filtros-box[hidden] { display: none; }
 
 /* Listado de servicios (tarjetas) */
 .servicios {
