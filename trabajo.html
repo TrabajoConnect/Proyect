@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trabajo - Solicitudes de clientes</title>
+    <title>Trabajo - Solicitudes de Clientes</title>
     <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="servicios.css">
 </head>
@@ -24,12 +24,100 @@
     </header>
 
     <section class="hero">
-        <h1>Solicitudes de clientes</h1>
+        <h1>Solicitudes de Clientes</h1>
         <p>Explora las solicitudes y ofrece tu servicio.</p>
+        <div class="busqueda-row">
+            <div class="search-field">
+                <input id="q" type="text" placeholder="Buscar por servicio, cliente o ubicación" />
+                <button id="btn-buscar" type="button" aria-label="Buscar solicitudes">
+                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                        <path d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14m0-2a9 9 0 1 0 5.3 16.3l4.4 4.4 1.4-1.4-4.4-4.4A9 9 0 0 0 11 2z"></path>
+                    </svg>
+                </button>
+            </div>
+            <button id="btn-toggle-filtros" class="btn-icon" type="button" aria-label="Mostrar filtros" aria-expanded="false" aria-controls="filtros-modal">
+                <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                    <path d="M3 5h18v2H3zm4 6h10v2H7zm4 6h2v2h-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <small class="ayuda">Sugerencia: busca "pintor Santo Domingo" o combina filtros para encontrar trabajos puntuales.</small>
     </section>
 
+    <div id="filtros-modal" class="filtros-modal" aria-hidden="true" hidden>
+        <div class="filtros-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="titulo-filtros-trabajo">
+            <button id="btn-cerrar-filtros" type="button" class="modal-close" aria-label="Cerrar filtros">×</button>
+            <h3 id="titulo-filtros-trabajo">Filtros de solicitudes</h3>
+            <p class="modal-subtitle">Refina los trabajos por ubicación y tipo de servicio.</p>
+            <div class="modal-columns">
+                <div class="modal-column">
+                    <h4>Ubicación</h4>
+                    <p class="column-hint">Ciudad, provincia o sector.</p>
+                    <div class="modal-input-group">
+                        <input id="filtro-ubicacion" type="text" placeholder="Ej. Santo Domingo" aria-label="Filtro por ubicación" />
+                        <button type="button" class="dropdown-arrow" aria-label="Ver ubicaciones" data-dropdown="lista-ubicaciones" data-input="filtro-ubicacion">
+                            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6H5z"></path></svg>
+                        </button>
+                        <div id="lista-ubicaciones" class="dropdown-options" role="listbox" hidden>
+                            <button type="button" data-value="Santo Domingo">Santo Domingo</button>
+                            <button type="button" data-value="Santiago">Santiago</button>
+                            <button type="button" data-value="La Romana">La Romana</button>
+                            <button type="button" data-value="La Altagracia">La Altagracia</button>
+                            <button type="button" data-value="Punta Cana">Punta Cana</button>
+                            <button type="button" data-value="San Cristóbal">San Cristóbal</button>
+                            <button type="button" data-value="Puerto Plata">Puerto Plata</button>
+                            <button type="button" data-value="Bávaro">Bávaro</button>
+                            <button type="button" data-value="La Vega">La Vega</button>
+                            <button type="button" data-value="Jarabacoa">Jarabacoa</button>
+                            <button type="button" data-value="San Pedro de Macorís">San Pedro de Macorís</button>
+                            <button type="button" data-value="Higüey">Higüey</button>
+                            <button type="button" data-value="Barahona">Barahona</button>
+                            <button type="button" data-value="Moca">Moca</button>
+                            <button type="button" data-value="Naco">Naco</button>
+                            <button type="button" data-value="Piantini">Piantini</button>
+                            <button type="button" data-value="Otros">Otros</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-column">
+                    <h4>Servicio solicitado</h4>
+                    <p class="column-hint">¿Qué tipo de trabajo buscan?</p>
+                    <div class="modal-input-group">
+                        <input id="filtro-servicio" type="text" placeholder="Ej. Electricista" aria-label="Filtro por tipo de servicio" />
+                        <button type="button" class="dropdown-arrow" aria-label="Ver servicios" data-dropdown="lista-servicios" data-input="filtro-servicio">
+                            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6H5z"></path></svg>
+                        </button>
+                        <div id="lista-servicios" class="dropdown-options" role="listbox" hidden>
+                            <button type="button" data-value="Electricista">Electricista</button>
+                            <button type="button" data-value="Plomería">Plomería</button>
+                            <button type="button" data-value="Ebanista">Ebanista</button>
+                            <button type="button" data-value="Tutor">Tutor</button>
+                            <button type="button" data-value="Carpintero">Carpintero</button>
+                            <button type="button" data-value="Cerrajero">Cerrajero</button>
+                            <button type="button" data-value="Jardinería">Jardinería</button>
+                            <button type="button" data-value="Pintor">Pintor</button>
+                            <button type="button" data-value="Albañil">Albañil</button>
+                            <button type="button" data-value="Mecánico">Mecánico</button>
+                            <button type="button" data-value="Chef">Chef</button>
+                            <button type="button" data-value="Programador">Programador</button>
+                            <button type="button" data-value="Diseñador">Diseñador</button>
+                            <button type="button" data-value="Niñera">Niñera</button>
+                            <button type="button" data-value="Servicios de limpieza">Servicios de limpieza</button>
+                            <button type="button" data-value="Seguridad">Seguridad</button>
+                            <button type="button" data-value="Otros">Otros</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-limpiar-filtros" type="button" class="btn-secundario">Limpiar filtros</button>
+                <button id="btn-aplicar-filtros" type="button" class="btn-primario">Aplicar filtros</button>
+            </div>
+        </div>
+    </div>
+
     <section class="servicios">
-        <h2>Solicitudes recientes</h2>
+        <h2>Solicitudes Recientes</h2>
         <div class="lista-servicios"><!-- contenido dinámico --></div>
     </section>
 
