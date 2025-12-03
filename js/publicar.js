@@ -1,6 +1,15 @@
 // Este archivo conecta el formulario de "Publicar" con la API.
 // Lee los datos del formulario, los valida de forma básica y los envía al servidor.
 
+function leerArchivoComoDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error || new Error('No se pudo leer la imagen'));
+    reader.readAsDataURL(file);
+  });
+}
+
 // Muestra en pantalla un resumen de lo que se envió (no es obligatorio, solo informativo)
 function mostrarResultado(id, datos, imagenSrc) {
   const resultado = document.getElementById('resultado');
@@ -14,7 +23,10 @@ function mostrarResultado(id, datos, imagenSrc) {
   if (document.getElementById('resEmail')) document.getElementById('resEmail').textContent = datos.email || '';
   document.getElementById('resHorario').textContent = datos.horario;
   const preview = document.getElementById('imagenPreview');
-  if (imagenSrc) preview.src = imagenSrc; else preview.removeAttribute('src');
+  const finalPreview = imagenSrc || datos.imagen;
+  if (preview) {
+    if (finalPreview) preview.src = finalPreview; else preview.removeAttribute('src');
+  }
   resultado.style.display = 'block';
 
   // Botones persistentes de modificar/eliminar
@@ -100,20 +112,19 @@ function hookPublicarFormulario() {
       ubicacion: form.ubicacion.value.trim(),
       telefono: (form.telefono?.value || '').trim(),
       email: (form.email?.value || '').trim(),
-      horario: form.horario.value.trim(),
-      imagen: null // Nota: por ahora no subimos archivos; opcionalmente guarda una URL.
+      horario: form.horario.value.trim()
     };
 
-    // Vista previa local de la imagen (no se sube al servidor todavía)
     let imagenSrc = '';
-    const file = form.imagen.files[0];
+    const file = form.imagen?.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        imagenSrc = e.target.result;
-        // Mostrar vista previa tras subir exitosamente
-      };
-      reader.readAsDataURL(file);
+      try {
+        imagenSrc = await leerArchivoComoDataURL(file);
+        payload.imagen = imagenSrc;
+      } catch (errorLectura) {
+        alert(errorLectura?.message || 'No se pudo leer la imagen seleccionada.');
+        return;
+      }
     }
 
     try {
