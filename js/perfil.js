@@ -1,4 +1,14 @@
 (function(){
+  function formatExperiencia(valor) {
+    if (!valor) return '-';
+    const fecha = new Date(valor);
+    if (Number.isNaN(fecha.getTime())) return valor;
+    const hoy = new Date();
+    let anos = hoy.getFullYear() - fecha.getFullYear();
+    if (hoy.getMonth() < fecha.getMonth() || (hoy.getMonth() === fecha.getMonth() && hoy.getDate() < fecha.getDate())) anos -= 1;
+    const fechaStr = fecha.toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: 'numeric' });
+    return `${fechaStr} · ${anos >= 0 ? `${anos} año${anos === 1 ? '' : 's'}` : '0 años'}`;
+  }
   function qs(name){ const p = new URLSearchParams(window.location.search); return p.get(name); }
   function show(el, v){ el.style.display = v ? '' : 'none'; }
 
@@ -18,7 +28,7 @@
       const p = await API.get(`/api/profesionales/${id}`);
       document.getElementById('perfil-nombre').textContent = p.nombre || 'Sin nombre';
       document.getElementById('perfil-servicio').textContent = p.servicio || '-';
-      document.getElementById('perfil-experiencia').textContent = p.experiencia || '-';
+      document.getElementById('perfil-experiencia').textContent = formatExperiencia(p.experiencia);
       document.getElementById('perfil-ubicacion').textContent = p.ubicacion || '-';
       document.getElementById('perfil-horario').textContent = p.horario || '-';
       document.getElementById('perfil-cedula').textContent = p.cedula || '-';

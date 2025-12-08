@@ -12,6 +12,40 @@ function leerArchivoComoDataURL(file) {
   });
 }
 
+function esFechaValida(valor) {
+  if (!valor) return false;
+  const fecha = new Date(valor);
+  return !Number.isNaN(fecha.getTime());
+}
+
+function formatearExperiencia(valor) {
+  if (!valor) return '-';
+  if (!esFechaValida(valor)) return valor;
+  const fecha = new Date(valor);
+  const hoy = new Date();
+  let anos = hoy.getFullYear() - fecha.getFullYear();
+  const antesDeAniversario = hoy.getMonth() < fecha.getMonth() || (hoy.getMonth() === fecha.getMonth() && hoy.getDate() < fecha.getDate());
+  if (antesDeAniversario) anos -= 1;
+  const fechaFormateada = fecha.toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: 'numeric' });
+  return anos >= 0 ? `${fechaFormateada} · ${anos} año${anos === 1 ? '' : 's'} de experiencia` : fechaFormateada;
+}
+
+function setValorExperienciaInput(input, valor) {
+  if (!input) return;
+  if (esFechaValida(valor)) {
+    const iso = new Date(valor).toISOString().slice(0, 10);
+    input.value = iso;
+    input.removeAttribute('data-placeholder');
+    input.removeAttribute('placeholder');
+  } else if (valor) {
+    input.value = '';
+    input.setAttribute('placeholder', `Antes: ${valor}`);
+  } else {
+    input.value = '';
+    input.removeAttribute('placeholder');
+  }
+}
+
 // Muestra en pantalla un resumen de lo que se envió (no es obligatorio, solo informativo)
 function mostrarResultado(id, datos, imagenSrc) {
   const resultado = document.getElementById('resultado');
@@ -19,7 +53,7 @@ function mostrarResultado(id, datos, imagenSrc) {
   document.getElementById('resNombre').textContent = datos.nombre;
   document.getElementById('resCedula').textContent = datos.cedula;
   document.getElementById('resServicio').textContent = datos.servicio;
-  document.getElementById('resExperiencia').textContent = datos.experiencia;
+  document.getElementById('resExperiencia').textContent = formatearExperiencia(datos.experiencia);
   document.getElementById('resUbicacion').textContent = datos.ubicacion;
   if (document.getElementById('resTelefono')) document.getElementById('resTelefono').textContent = datos.telefono || '';
   if (document.getElementById('resEmail')) document.getElementById('resEmail').textContent = datos.email || '';
@@ -50,7 +84,7 @@ function mostrarResultado(id, datos, imagenSrc) {
         const known = ['Tutor','Electricista','Niñera','Ebanista','Otro'];
         if (!known.includes(servicio)) { servicioSelect.value = 'Otro'; otroServicioInput.style.display = 'block'; otroServicioInput.value = servicio; }
         else { servicioSelect.value = servicio; otroServicioInput.style.display = servicio === 'Otro' ? 'block' : 'none'; otroServicioInput.value = servicio === 'Otro' ? servicio : ''; }
-        form.experiencia.value = p.experiencia || '';
+        setValorExperienciaInput(form.experiencia, p.experiencia);
         form.ubicacion.value = p.ubicacion || '';
         form.telefono.value = p.telefono || '';
         form.email.value = p.email || '';
@@ -181,7 +215,7 @@ async function cargarMisPublicaciones() {
         <td>${p.nombre || ''}</td>
         <td>${p.cedula || ''}</td>
         <td>${p.servicio || ''}</td>
-        <td>${p.experiencia || ''}</td>
+        <td>${formatearExperiencia(p.experiencia)}</td>
         <td>${p.ubicacion || ''}</td>
         <td>${p.telefono || ''}</td>
         <td>${p.email || ''}</td>
@@ -212,7 +246,7 @@ async function cargarMisPublicaciones() {
             const known = ['Tutor','Electricista','Niñera','Ebanista','Otro'];
             if (!known.includes(servicio)) { servicioSelect.value = 'Otro'; otroServicioInput.style.display = 'block'; otroServicioInput.value = servicio; }
             else { servicioSelect.value = servicio; otroServicioInput.style.display = servicio === 'Otro' ? 'block' : 'none'; otroServicioInput.value = servicio === 'Otro' ? servicio : ''; }
-            form.experiencia.value = p.experiencia || '';
+            setValorExperienciaInput(form.experiencia, p.experiencia);
             form.ubicacion.value = p.ubicacion || '';
             form.telefono.value = p.telefono || '';
             form.email.value = p.email || '';

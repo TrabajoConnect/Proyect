@@ -1,5 +1,18 @@
 // En esta página pedimos a la API la lista de profesionales y los dibujamos como tarjetas.
 
+function formatExperiencia(valor) {
+  if (!valor) return '';
+  const fecha = new Date(valor);
+  if (Number.isNaN(fecha.getTime())) return valor;
+  const hoy = new Date();
+  let anos = hoy.getFullYear() - fecha.getFullYear();
+  if (hoy.getMonth() < fecha.getMonth() || (hoy.getMonth() === fecha.getMonth() && hoy.getDate() < fecha.getDate())) {
+    anos -= 1;
+  }
+  const fechaStr = fecha.toLocaleDateString('es-DO', { year: 'numeric', month: 'short', day: 'numeric' });
+  return `${fechaStr} · ${anos >= 0 ? `${anos} año${anos === 1 ? '' : 's'}` : '0 años'}`;
+}
+
 async function cargarProfesionales() {
   const contenedor = document.querySelector('.lista-servicios');
   if (!contenedor) return;
@@ -34,7 +47,7 @@ async function cargarProfesionales() {
       <div class="tarjeta" data-id="${p.id}">
         <img src="${p.imagen || 'https://via.placeholder.com/250x150?text=Profesional'}" alt="${p.servicio || 'Servicio'}">
         <h3>${p.nombre || 'Sin nombre'}</h3>
-        <p>${p.servicio || ''} ${p.experiencia ? `- ${p.experiencia}` : ''}</p>
+        <p>${p.servicio || ''} ${p.experiencia ? `- ${formatExperiencia(p.experiencia)}` : ''}</p>
         <small>${p.ubicacion || ''}</small>
         <button type="button" class="btn-ver-perfil" data-id="${p.id}">Ver perfil</button>
       </div>
