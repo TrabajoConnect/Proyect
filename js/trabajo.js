@@ -218,6 +218,12 @@ function hookFiltrosTrabajo(options = {}) {
       cerrarDropdowns();
       input.focus();
     });
+
+    list.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      list.scrollTop += event.deltaY;
+    }, { passive: false });
   });
 
   document.addEventListener('wheel', (event) => {

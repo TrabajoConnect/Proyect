@@ -249,6 +249,12 @@ function hookFiltros(options = {}) {
       input.focus();
     });
 
+    list.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      list.scrollTop += event.deltaY;
+    }, { passive: false });
+
   });
 
   document.addEventListener('click', (event) => {
