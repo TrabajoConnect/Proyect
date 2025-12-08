@@ -2,6 +2,159 @@
 // Lee los datos del formulario, los valida de forma básica y los envía al servidor.
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB, coincide con límite del servidor
+const PROVINCIAS_RD = [
+  'Santo Domingo',
+  'Distrito Nacional',
+  'Santiago',
+  'La Romana',
+  'La Altagracia',
+  'Punta Cana',
+  'San Cristóbal',
+  'Puerto Plata',
+  'Bávaro',
+  'La Vega',
+  'Jarabacoa',
+  'San Pedro de Macorís',
+  'Higüey',
+  'Barahona',
+  'Moca',
+  'Naco',
+  'Piantini',
+  'Otros'
+];
+const PROVINCIAS_NORMALIZADAS = PROVINCIAS_RD.map((prov) => prov.normalize('NFD').replace(/[^\w]/g, '').toLowerCase());
+
+function normalizarUbicacionTexto(texto) {
+  if (!texto) return '';
+  return texto.normalize('NFD').replace(/[^\w]/g, '').toLowerCase();
+}
+
+function encontrarProvinciaCoincidente(texto) {
+  if (!texto) return '';
+  const normalizado = normalizarUbicacionTexto(texto);
+  for (let i = 0; i < PROVINCIAS_NORMALIZADAS.length; i += 1) {
+    if (normalizado.includes(PROVINCIAS_NORMALIZADAS[i])) return PROVINCIAS_RD[i];
+  }
+  return '';
+}
+
+function construirUbicacionFinal(provincia, descripcion) {
+  const partes = [provincia?.trim() || '', descripcion?.trim() || ''].filter(Boolean);
+  return partes.join(' · ');
+}
+
+function actualizarUbicacionOculta(provinciaSelect, descripcionInput, hiddenInput) {
+  if (!hiddenInput) return;
+  const provincia = provinciaSelect?.value || '';
+  const descripcion = descripcionInput?.value || '';
+  hiddenInput.value = construirUbicacionFinal(provincia, descripcion);
+}
+
+function mostrarCampoExtraUbicacion(visible) {
+  const extra = document.getElementById('ubicacion-extra');
+  const toggle = document.getElementById('ubicacion-extra-toggle');
+  if (!extra || !toggle) return;
+  extra.style.display = visible ? 'block' : 'none';
+  toggle.textContent = visible ? 'Ocultar información extra' : 'Añadir información extra';
+}
+
+function dividirUbicacionParaFormulario(texto) {
+  if (!texto) return { provincia: '', descripcion: '' };
+  const provinciaDetectada = encontrarProvinciaCoincidente(texto) || (texto ? 'Otros' : '');
+  let descripcion = texto;
+  if (provinciaDetectada && provinciaDetectada !== 'Otros') {
+    const regex = new RegExp(provinciaDetectada.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    descripcion = texto.replace(regex, '').replace(/^[·\-:,\s]+/, '').trim();
+  }
+  if (!descripcion && provinciaDetectada === 'Otros') descripcion = texto;
+  return { provincia: provinciaDetectada, descripcion };
+}
+
+function establecerUbicacionEnFormulario(texto) {
+  const provinciaSelect = document.getElementById('provincia');
+  const descripcionInput = document.getElementById('ubicacionDescripcion');
+  const hiddenInput = document.getElementById('ubicacion');
+  if (!provinciaSelect || !hiddenInput) return;
+  const { provincia, descripcion } = dividirUbicacionParaFormulario(texto || '');
+  provinciaSelect.value = provincia || '';
+  if (descripcionInput) descripcionInput.value = descripcion || '';
+  delete provinciaSelect.dataset.manualUbicacion;
+  if (descripcionInput) delete descripcionInput.dataset.manualUbicacion;
+  mostrarCampoExtraUbicacion(Boolean(descripcion));
+  actualizarUbicacionOculta(provinciaSelect, descripcionInput, hiddenInput);
+}
+
+function setEstadoUbicacion(mensaje, tipo = 'info') {
+  const estado = document.getElementById('ubicacion-status');
+  if (!estado) return;
+  estado.textContent = mensaje || '';
+  const colores = { info: '#0a6', success: '#02864d', error: '#c0392b' };
+  estado.style.color = colores[tipo] || colores.info;
+}
+
+async function traducirCoordenadasAUbicacion(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=es&lat=${lat}&lon=${lon}`;
+  const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!resp.ok) throw new Error('No se pudo traducir la ubicación detectada.');
+  const data = await resp.json();
+  const address = data.address || {};
+  const candidatosProvincia = [address.state, address.region, address.county, address.city, address.town];
+  let provincia = '';
+  for (const candidato of candidatosProvincia) {
+    provincia = encontrarProvinciaCoincidente(candidato);
+    if (provincia) break;
+  }
+  const countryCode = (address.country_code || '').trim().toLowerCase();
+  if (!provincia && countryCode === 'do') provincia = 'Otros';
+  const partesDescripcion = [];
+  const capasDetalle = [address.city_district, address.city, address.town, address.village, address.suburb, address.neighbourhood, address.road];
+  capasDetalle.forEach((capa) => {
+    if (capa && !partesDescripcion.includes(capa)) partesDescripcion.push(capa);
+  });
+  const descripcion = partesDescripcion.filter(Boolean).slice(0, 2).join(', ');
+  return { provincia, descripcion };
+}
+
+function detectarUbicacionAutomatica(provinciaSelect, descripcionInput, hiddenInput, opciones = {}) {
+  if (!provinciaSelect || !hiddenInput) return;
+  const { soloSiVacio = true } = opciones;
+  if (!navigator.geolocation) {
+    setEstadoUbicacion('Tu navegador no permite detección automática. Selecciona la provincia manualmente.', 'error');
+    return;
+  }
+  const yaTieneSeleccion = Boolean((provinciaSelect && provinciaSelect.value) || (descripcionInput && descripcionInput.value));
+  if (soloSiVacio && yaTieneSeleccion) return;
+  setEstadoUbicacion('Detectando tu provincia automáticamente…', 'info');
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    try {
+      const { latitude, longitude } = position.coords;
+      const ubicacionDetectada = await traducirCoordenadasAUbicacion(latitude, longitude);
+      const presionManual = provinciaSelect.dataset.manualUbicacion === '1' || descripcionInput?.dataset.manualUbicacion === '1';
+      if (presionManual) { setEstadoUbicacion('Mantuvimos tu selección manual.', 'info'); return; }
+      if (ubicacionDetectada.provincia) {
+        provinciaSelect.value = ubicacionDetectada.provincia;
+      } else if (!provinciaSelect.value) {
+        provinciaSelect.value = 'Otros';
+      }
+      if (descripcionInput && ubicacionDetectada.descripcion) {
+        descripcionInput.value = ubicacionDetectada.descripcion;
+        mostrarCampoExtraUbicacion(true);
+      }
+      delete provinciaSelect.dataset.manualUbicacion;
+      if (descripcionInput) delete descripcionInput.dataset.manualUbicacion;
+      actualizarUbicacionOculta(provinciaSelect, descripcionInput, hiddenInput);
+      setEstadoUbicacion('Detectamos tu ubicación. Si no es correcta, cámbiala manualmente.', 'success');
+    } catch (geoErr) {
+      setEstadoUbicacion(geoErr.message || 'No se pudo traducir la ubicación detectada.', 'error');
+    }
+  }, (error) => {
+    let mensaje = 'No se pudo obtener tu ubicación automática.';
+    if (error.code === error.PERMISSION_DENIED) mensaje = 'Autoriza el acceso a tu ubicación para detectarla automáticamente o selecciona la provincia manualmente.';
+    else if (error.code === error.POSITION_UNAVAILABLE) mensaje = 'El servicio de ubicación no está disponible en este momento.';
+    else if (error.code === error.TIMEOUT) mensaje = 'La detección de ubicación tardó demasiado; selecciona la provincia manualmente.';
+    setEstadoUbicacion(mensaje, 'error');
+  }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+}
 
 function leerArchivoComoDataURL(file) {
   return new Promise((resolve, reject) => {
@@ -85,7 +238,7 @@ function mostrarResultado(id, datos, imagenSrc) {
         if (!known.includes(servicio)) { servicioSelect.value = 'Otro'; otroServicioInput.style.display = 'block'; otroServicioInput.value = servicio; }
         else { servicioSelect.value = servicio; otroServicioInput.style.display = servicio === 'Otro' ? 'block' : 'none'; otroServicioInput.value = servicio === 'Otro' ? servicio : ''; }
         setValorExperienciaInput(form.experiencia, p.experiencia);
-        form.ubicacion.value = p.ubicacion || '';
+        establecerUbicacionEnFormulario(p.ubicacion || '');
         form.telefono.value = p.telefono || '';
         form.email.value = p.email || '';
         form.horario.value = p.horario || '';
@@ -126,6 +279,10 @@ function hookPublicarFormulario() {
   const form = document.getElementById('registroForm');
   const servicioSelect = document.getElementById('servicio');
   const otroServicioInput = document.getElementById('otroServicioInput');
+  const provinciaSelect = document.getElementById('provincia');
+  const ubicacionDescripcion = document.getElementById('ubicacionDescripcion');
+  const ubicacionHidden = document.getElementById('ubicacion');
+  const toggleExtra = document.getElementById('ubicacion-extra-toggle');
 
   if (!form) return;
 
@@ -134,11 +291,38 @@ function hookPublicarFormulario() {
     otroServicioInput.style.display = this.value === 'Otro' ? 'block' : 'none';
   });
 
+  if (provinciaSelect && ubicacionHidden) {
+    actualizarUbicacionOculta(provinciaSelect, ubicacionDescripcion, ubicacionHidden);
+    setEstadoUbicacion('Intentaremos detectar tu provincia automáticamente.', 'info');
+    provinciaSelect.addEventListener('change', () => {
+      provinciaSelect.dataset.manualUbicacion = '1';
+      actualizarUbicacionOculta(provinciaSelect, ubicacionDescripcion, ubicacionHidden);
+    });
+  }
+  if (ubicacionDescripcion && ubicacionHidden) {
+    ubicacionDescripcion.addEventListener('input', () => {
+      ubicacionDescripcion.dataset.manualUbicacion = '1';
+      actualizarUbicacionOculta(provinciaSelect, ubicacionDescripcion, ubicacionHidden);
+    });
+  }
+
+  if (toggleExtra) {
+    toggleExtra.addEventListener('click', () => {
+      const extraVisible = document.getElementById('ubicacion-extra')?.style.display === 'block';
+      mostrarCampoExtraUbicacion(!extraVisible);
+      if (!extraVisible && ubicacionDescripcion) ubicacionDescripcion.focus();
+    });
+  }
+
+  mostrarCampoExtraUbicacion(false);
+  detectarUbicacionAutomatica(provinciaSelect, ubicacionDescripcion, ubicacionHidden, { soloSiVacio: true });
+
   // Envío del formulario a la API
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const servicioElegido = servicioSelect.value === 'Otro' ? (otroServicioInput.value || 'Otro') : servicioSelect.value;
+    actualizarUbicacionOculta(provinciaSelect, ubicacionDescripcion, form.ubicacion);
 
     const payload = {
       nombre: form.nombre.value.trim(),
@@ -150,6 +334,11 @@ function hookPublicarFormulario() {
       email: (form.email?.value || '').trim(),
       horario: form.horario.value.trim()
     };
+
+    if (!payload.ubicacion) {
+      alert('Selecciona al menos una provincia o describe tu ubicación.');
+      return;
+    }
 
     let imagenSrc = '';
     const file = form.imagen?.files?.[0];
@@ -247,7 +436,7 @@ async function cargarMisPublicaciones() {
             if (!known.includes(servicio)) { servicioSelect.value = 'Otro'; otroServicioInput.style.display = 'block'; otroServicioInput.value = servicio; }
             else { servicioSelect.value = servicio; otroServicioInput.style.display = servicio === 'Otro' ? 'block' : 'none'; otroServicioInput.value = servicio === 'Otro' ? servicio : ''; }
             setValorExperienciaInput(form.experiencia, p.experiencia);
-            form.ubicacion.value = p.ubicacion || '';
+            establecerUbicacionEnFormulario(p.ubicacion || '');
             form.telefono.value = p.telefono || '';
             form.email.value = p.email || '';
             form.horario.value = p.horario || '';

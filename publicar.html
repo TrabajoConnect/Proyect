@@ -72,6 +72,13 @@
     .tabla-gestion th { background: #f7f7f7; text-align: left; }
     .tabla-gestion .btn-editar { background: #ffc107; color: #000; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
     .tabla-gestion .btn-eliminar { background: #dc3545; color: #fff; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    .ubicacion-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .ubicacion-group select { flex: 1; min-width: 220px; }
+    .ubicacion-status { display: block; min-height: 18px; font-size: 13px; color: #0a6; margin: -10px 0 6px; }
+    .ubicacion-extra-toggle { font-size: 13px; color: #055970; cursor: pointer; display: inline-block; margin-bottom: 6px; }
+    .ubicacion-extra-toggle:hover { text-decoration: underline; }
+    .ubicacion-extra { display: none; }
+    .ubicacion-extra input { width: 100%; margin-top: 5px; }
   </style>
 </head>
 <body>
@@ -109,8 +116,37 @@
       <label for="experiencia">Fecha de inicio (tiempo de experiencia):</label>
       <input type="date" id="experiencia" name="experiencia" required>
 
-      <label for="ubicacion">Localización:</label>
-      <input type="text" id="ubicacion" name="ubicacion" required>
+      <label for="provincia">Ubicación:</label>
+      <div class="ubicacion-group">
+        <select id="provincia" required>
+          <option value="">Selecciona provincia o ciudad</option>
+          <option value="Santo Domingo">Santo Domingo</option>
+          <option value="Distrito Nacional">Distrito Nacional</option>
+          <option value="Santiago">Santiago</option>
+          <option value="La Romana">La Romana</option>
+          <option value="La Altagracia">La Altagracia</option>
+          <option value="Punta Cana">Punta Cana</option>
+          <option value="San Cristóbal">San Cristóbal</option>
+          <option value="Puerto Plata">Puerto Plata</option>
+          <option value="Bávaro">Bávaro</option>
+          <option value="La Vega">La Vega</option>
+          <option value="Jarabacoa">Jarabacoa</option>
+          <option value="San Pedro de Macorís">San Pedro de Macorís</option>
+          <option value="Higüey">Higüey</option>
+          <option value="Barahona">Barahona</option>
+          <option value="Moca">Moca</option>
+          <option value="Naco">Naco</option>
+          <option value="Piantini">Piantini</option>
+          <option value="Otros">Otros</option>
+        </select>
+      </div>
+      <small id="ubicacion-status" class="ubicacion-status"></small>
+      <span id="ubicacion-extra-toggle" class="ubicacion-extra-toggle">Añadir información extra</span>
+      <div id="ubicacion-extra" class="ubicacion-extra">
+        <label for="ubicacionDescripcion">Descripción adicional de la zona:</label>
+        <input type="text" id="ubicacionDescripcion" placeholder="Ej. Sector Naco, cerca de Av. Churchill">
+      </div>
+      <input type="hidden" id="ubicacion" name="ubicacion" required>
 
   <label for="telefono">Teléfono de contacto (opcional):</label>
   <input type="tel" id="telefono" name="telefono" placeholder="8095551234">
