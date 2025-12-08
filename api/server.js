@@ -22,8 +22,9 @@ process.on('uncaughtException', (err) => {
 });
 // Habilita que navegadores de otra dirección (tu frontend) puedan llamar a esta API
 app.use(cors());
-// Permite que la API entienda cuerpos JSON enviados por el navegador
-app.use(express.json());
+// Permite que la API entienda cuerpos JSON o formularios grandes enviados por el navegador (ej. imágenes base64)
+app.use(express.json({ limit: '6mb' }));
+app.use(express.urlencoded({ limit: '6mb', extended: true }));
 // Adjunta req.userId si el frontend envía X-User-Id
 app.use(attachUser);
 

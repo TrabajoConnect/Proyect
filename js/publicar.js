@@ -1,6 +1,8 @@
 // Este archivo conecta el formulario de "Publicar" con la API.
 // Lee los datos del formulario, los valida de forma básica y los envía al servidor.
 
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB, coincide con límite del servidor
+
 function leerArchivoComoDataURL(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -118,6 +120,10 @@ function hookPublicarFormulario() {
     let imagenSrc = '';
     const file = form.imagen?.files?.[0];
     if (file) {
+      if (file.size > MAX_IMAGE_BYTES) {
+        alert('La imagen supera el límite de 5 MB. Por favor selecciona una más ligera.');
+        return;
+      }
       try {
         imagenSrc = await leerArchivoComoDataURL(file);
         payload.imagen = imagenSrc;
